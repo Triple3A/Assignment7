@@ -1,10 +1,10 @@
-#ifndef SITE_HANDLER_H
-#define SITE_HANDLER_H
+#ifndef WEBSITE_HANDLER_H
+#define WEBSITE_HANDLER_H
 
 #include "repository_of_users.hpp"
 #include "repository_films.hpp"
 
-class Site_Handler
+class Website_Handler
 {
 public:
 	std::string get_input();
