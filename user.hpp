@@ -2,7 +2,7 @@
 #define USER_H
 #include <iostream>
 #include <vector>
-#include "film.hpp"
+// #include "film.hpp"
 
 class User
 {
@@ -15,9 +15,10 @@ public:
 	int get_age();
 	int get_id();
 	int get_account();
-	std::vector<Film*> get_films();
+	// std::vector<Film*> get_films();
 	std::vector<std::string> get_unread_messages();
 	std::vector<std::string> get_read_messages();
+	void set_id(int _id);
 	
 	void add_unread_message(std::string);
 	void read_the_unread_messages();
@@ -27,7 +28,7 @@ public:
 	void post_comment(int film_id, std::string);
 	void post_rate(int film_id, float score);
 	void buy(int film_id);
-	void add_film_to_purchased(Film* film);
+	// void add_film_to_purchased(Film* film);
 	void get_details_of_film(int film_id);
 	bool is_purchased(int film_id);
 	void charge_money(int amount);
@@ -41,7 +42,7 @@ protected:
 	bool publisher;
 	int id;
 	int account;
-	std::vector<Film*> purchased_films;
+	// std::vector<Film*> purchased_films;
 	std::vector<std::string> unread_messages;
 	std::vector<std::string> read_messages;
 };

@@ -11,8 +11,8 @@ public:
 	Repository_of_users();
 	~Repository_of_users();
 	void add_user(User*);
-	void read_file(std::string);
-	void add_to_file(User*);
+	// void read_file(std::string);
+	// void add_to_file();
 private:
 	std::vector<User*> users;
 	int id_counter;

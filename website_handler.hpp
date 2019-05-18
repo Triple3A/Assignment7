@@ -1,10 +1,11 @@
-#ifndef WEBSITE_HANDLER_H
-#define WEBSITE_HANDLER_H
+#ifndef WEBSITE_HANDLER_HPP
+#define WEBSITE_HANDLER_HPP
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include "repository_of_users.hpp"
-#include "repository_films.hpp"
+// #include "repository_films.hpp"
 
 const char SPACE = ' ';
 const std::string PUT = "PUT";
@@ -23,15 +24,21 @@ const std::string COMMENTS = "comments";
 const std::string PUBLISHED = "published";
 const std::string PURCHASED = "purchased";
 const std::string NOTIFICATIONS = "notifications";
+const std::string USERNAME = "username";
+const std::string PASSWORD = "password";
+const std::string AGE = "age";
+const std::string EMAIL = "email";
 
-class Website_Handler
+class Website_handler
 {
 public:
+	Website_handler();
+	// ~Website_handler();
 	std::string get_input();
-	void seperator(std::string);
+	void separator(std::string);
 	void processing_inputs();
-	void read_files();
-	void add_to_files();
+	// void read_files();
+	// void add_to_files();
 	void add_money(int amount);
 	
 	bool is_get();
@@ -51,35 +58,35 @@ public:
 	bool is_purchased();
 	bool is_notifications();
 	
-	void put();
-	void get();
+	// void put();
+	// void get();
 	void post();
-	void _delete();
+	// void _delete();
 	
 	void signup();
-	void login();
-	void films();
-	void money();
-	void replies();
-	void followers();
-	void buy();
-	void rate();
-	void comments();
-	
-	void get_followers();
-	void published();
-	void get_films();
-	void purchased();
-	void notifications();
-	
-	void put_film();
-	
-	void delete_film();
-	void delete_comment();
+	// void login();
+	// void films();
+	// void money();
+	// void replies();
+	// void followers();
+	// void buy();
+	// void rate();
+	// void comments();
+	//
+	// void get_followers();
+	// void published();
+	// void get_films();
+	// void purchased();
+	// void notifications();
+	//
+	// void put_film();
+	//
+	// void delete_film();
+	// void delete_comment();
 private:
 	int cash;
 	std::vector<std::string> inputs;
-	Repository_of_films* films;
+	// Repository_of_films* films;
 	Repository_of_users* users;
 	User* login_user;
 };
