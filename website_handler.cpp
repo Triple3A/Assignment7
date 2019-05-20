@@ -162,8 +162,8 @@ void Website_handler::post()
 	// 	followers();
 	else if(is_buy())
 		buy();
-	// else if(is_rate())
-	// 	rate();
+	else if(is_rate())
+		rate();
 	// else if(is_comments())
 	// 	comments();
 	// else
@@ -382,12 +382,49 @@ void Website_handler::buy()
 	print_ok();
 }
 
+void Website_handler::rate()
+{
+	float score;
+	int film_id;
+	// if(inputs[2] != "?")
+	// 	throw Bad_request();
+	for(int i = 0; i < inputs.size(); i++)
+	{
+		if(inputs[i] == SCORE)
+		{
+			i++;
+			score = std::stof(inputs[i]);
+		}
+		else if(inputs[i] == FILM_ID)
+		{
+			i++;
+			film_id = std::stoi(inputs[i]);
+		}
+		// else
+		// 	throw Bad_request();
+	}
+	Film* film = login_user->search_film(film_id);
+	login_user->post_rate(film, score);
+	send_film_rate_film(login_user, film->get_publisher(), film);
+	print_ok();
+}
+
 void Website_handler::send_notif_buy_film(User* user, Publisher* publisher, Film* film)
 {
 	std::string message;
 	message = "User " + user->get_name();
 	message += " with id " + std::to_string(user->get_id());
 	message += " buy your film " + film->get_name();
+	message += " with id " + std::to_string(film->get_id());
+	publisher->add_unread_message(message);
+}
+
+void Website_handler::send_film_rate_film(User* user, Publisher* publisher, Film* film)
+{
+	std::string message;
+	message = "User " + user->get_name();
+	message += " with id " + std::to_string(user->get_id());
+	message += " rate your film " + film->get_name();
 	message += " with id " + std::to_string(film->get_id());
 	publisher->add_unread_message(message);
 }

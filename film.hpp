@@ -24,7 +24,7 @@ public:
 	std::string get_name();
 	// void add_comment(Comment* comment);
 	void add_score(float score);
-	int get_number_of_scores();
+	// int get_number_of_scores();
 	void calculate_rate();
 	int calculate_price();
 	float get_rate();

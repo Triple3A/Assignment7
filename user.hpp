@@ -29,7 +29,8 @@ public:
 	void get_read_messages(int limit);
 	void show_purchased();
 	void post_comment(int film_id, std::string);
-	void post_rate(int film_id, float score);
+	void post_rate(Film* film, float score);
+	Film* search_film(int film_id);
 	void buy(Film* film);
 	void add_film_to_purchased(Film* film);
 	void get_details_of_film(int film_id);

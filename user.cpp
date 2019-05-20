@@ -52,3 +52,18 @@ void User::add_unread_message(std::string message)
 {
 	unread_messages.push_back(message);
 }
+
+Film* User::search_film(int film_id)
+{
+	for(int i = 0; i < purchased_films.size(); i++)
+	{
+		if(purchased_films[i]->get_id() == film_id)
+			return purchased_films[i];
+	}
+	throw Permission_denied();
+}
+
+void User::post_rate(Film* film, float score)
+{
+	film->add_score(score);
+}

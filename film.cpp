@@ -54,9 +54,9 @@ bool Film::is_good()
 
 int Film::calculate_price()
 {
-	if(this->is_weak())
+	if(is_weak())
 		return price * 80 / 100;
-	else if(this->is_normal())
+	else if(is_normal())
 		return price * 90 / 100;
 	else 
 		return price * 95 / 100;
@@ -65,4 +65,20 @@ int Film::calculate_price()
 std::string Film::get_name()
 {
 	return name;
+}
+
+void Film::add_score(float score)
+{
+	scores.push_back(score);
+	calculate_rate();
+}
+
+void Film::calculate_rate()
+{
+	float sum = 0.0;
+	for(int i = 0 ;i < scores.size(); i++)
+	{
+		sum += scores[i];
+	}
+	rate = sum / scores.size();
 }
