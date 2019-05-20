@@ -2,28 +2,32 @@
 #define FILM_H
 
 #include <vector>
-#include "comment.hpp"
+#include "publisher.hpp"
+// #include "comment.hpp"
 
-class Comment;
+class Publisher;
+// class Comment;
 
 class Film
 {
 public:
-	Film(int _id, std::string _name, std::string _year, int _length, int _price, std::string _summary, std::string _director);
-	~Film();
+	Film(std::string _name, std::string _year, int _length, int _price, std::string _summary, std::string _director);
+	// ~Film();
 	void sold();
-	void edit(std::vector<string> edits);
+	void edit(std::vector<std::string> edits);
 	int get_id();
-	void add_comment(Comment* comment);
+	void set_id(int _id);
+	// void add_comment(Comment* comment);
 	void add_score(float score);
 	int get_number_of_scores();
 	void calculate_rate();
 	bool is_weak();
 	bool is_normal();
 	bool is_good();
+	void set_publisher(User* _publisher);
 private:
-	Publisher* publisher;
-	Repository_of_comments* comments;
+	User* publisher;
+	// Repository_of_comments* comments;
 	int id;
 	std::string name;
 	std::string year;

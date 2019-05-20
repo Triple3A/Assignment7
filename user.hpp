@@ -2,20 +2,23 @@
 #define USER_H
 #include <iostream>
 #include <vector>
-// #include "film.hpp"
+
+class Permision_denied {};
+class Film;
 
 class User
 {
 public:
 	User(std::string _name, std::string _password, std::string _email, int _age, bool _publisher);
-	~User();
+	// ~User();
 	std::string get_name();
 	std::string get_password();
 	std::string get_email();
 	int get_age();
 	int get_id();
 	int get_account();
-	// std::vector<Film*> get_films();
+	// User operator=(User& user);
+	std::vector<Film*> get_films();
 	std::vector<std::string> get_unread_messages();
 	std::vector<std::string> get_read_messages();
 	void set_id(int _id);
@@ -28,12 +31,13 @@ public:
 	void post_comment(int film_id, std::string);
 	void post_rate(int film_id, float score);
 	void buy(int film_id);
-	// void add_film_to_purchased(Film* film);
+	void add_film_to_purchased(Film* film);
 	void get_details_of_film(int film_id);
 	bool is_purchased(int film_id);
 	void charge_money(int amount);
 	void follow_publisher(int publisher_id);
-	bool is_publisher(int user_id);
+	bool is_publisher();
+	virtual void post_film(Film* film) {};
 protected:
 	std::string name;
 	std::string password;
@@ -42,8 +46,10 @@ protected:
 	bool publisher;
 	int id;
 	int account;
-	// std::vector<Film*> purchased_films;
+	std::vector<Film*> purchased_films;
 	std::vector<std::string> unread_messages;
 	std::vector<std::string> read_messages;
 };
+
+#include "film.hpp"
 #endif

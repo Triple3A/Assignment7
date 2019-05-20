@@ -3,13 +3,12 @@
 Website_handler::Website_handler()
 {
 	users = new Repository_of_users();
+	films = new Repository_of_films();
 }
 
-std::string Website_handler::get_input()
+void Website_handler::get_input(std::string& input)
 {
-	std::string input;
 	getline(std::cin, input);
-	return input;
 }
 
 void Website_handler::separator(std::string input)
@@ -150,10 +149,10 @@ void Website_handler::post()
 {
 	if(is_signup())
 		signup();
-	// else if(is_login())
-	// 	login();
-	// else if(is_films())
-	// 	films();
+	else if(is_login())
+		login();
+	else if(is_films())
+		post_films();
 	// else if(is_money())
 	// 	money();
 	// else if(is_replies())
@@ -243,12 +242,87 @@ void Website_handler::signup()
 		// else
 //	throw Bad_request();
 	}
-	User* user = new User(username, password, email, age, is_publisher);
-	users->add_user(user);
-	login_user = user;
-	std::cout << user->get_id() << '\n';
+	if(is_publisher)
+		login_user = new Publisher(username, password, email, age, true);
+	else
+		login_user = new User(username, password, email, age, false);
+	users->add_user(login_user);
+	std::cout << login_user->get_id() << '\n';
 	std::cout << "OK" << '\n';
 }
 
+void Website_handler::login()
+{
+	std::string username, password;
+	// if(inputs[2] != "?")
+	// 	throw Bad_request();
+	for(int i = 3; i < inputs.size() - 1; i++)
+	{
+		if(inputs[i] == USERNAME)		
+		{			
+			i++;
+			username = inputs[i];		
+		}		
+		else if(inputs[i] == PASSWORD)		
+		{
+			i++;			
+			password = inputs[i];		
+		}
+	// else
+	// throw Bad_request();	
+	}
+	login_user = users->search_user(username, password);
+	std::cout << login_user->get_id() << '\n';
+	std::cout << "OK" << '\n';
+}
 
-
+void Website_handler::post_films()
+{
+	std::string name, year, summary, director;
+	int length, price;
+	// if(inputs[2] != "?")
+	// 	throw Bad_request();
+	// if(!login_user->is_publisher())
+// 		throw Permission_denied();
+	for(int i = 3; i < inputs.size() - 1; i++)
+	{
+		if(inputs[i] == NAME)
+		{
+			i++;
+			name = inputs[i];
+		}
+		else if(inputs[i] == YEAR)
+		{
+			i++;
+			year = inputs[i];
+		}
+		else if(inputs[i] == LENGTH)
+		{
+			i++;
+			length = std::stoi(inputs[i]);
+		}
+		else if(inputs[i] == PRICE)
+		{
+			i++;
+			price = std::stoi(inputs[i]);
+		}
+		else if(inputs[i] == SUMMARY)
+		{
+			i++;
+			summary = inputs[i];
+		}
+		else if(inputs[i] == DIRECTOR)
+		{
+			i++;
+			director = inputs[i];
+		}
+	// else
+	// throw Bad_request();	
+	}
+	Film* film = new Film(name, year, length, price, summary, director);
+	film->set_publisher(login_user);
+	films->add_film(film);
+	login_user->post_film(film);
+	std::cout << film->get_id() << '\n';
+	std::cout << "OK" << '\n';
+}

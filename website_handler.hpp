@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include "repository_of_users.hpp"
-// #include "repository_films.hpp"
+#include "repository_of_films.hpp"
 
 const char SPACE = ' ';
 const std::string PUT = "PUT";
@@ -28,13 +28,19 @@ const std::string USERNAME = "username";
 const std::string PASSWORD = "password";
 const std::string AGE = "age";
 const std::string EMAIL = "email";
+const std::string NAME = "name";
+const std::string YEAR = "year";
+const std::string LENGTH = "length";
+const std::string PRICE = "price";
+const std::string SUMMARY = "summary";
+const std::string DIRECTOR = "director";
 
 class Website_handler
 {
 public:
 	Website_handler();
 	// ~Website_handler();
-	std::string get_input();
+	void get_input(std::string&);
 	void separator(std::string);
 	void processing_inputs();
 	// void read_files();
@@ -64,8 +70,8 @@ public:
 	// void _delete();
 	
 	void signup();
-	// void login();
-	// void films();
+	void login();
+	void post_films();
 	// void money();
 	// void replies();
 	// void followers();
@@ -86,7 +92,7 @@ public:
 private:
 	int cash;
 	std::vector<std::string> inputs;
-	// Repository_of_films* films;
+	Repository_of_films* films;
 	Repository_of_users* users;
 	User* login_user;
 };

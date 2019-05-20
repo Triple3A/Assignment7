@@ -7,11 +7,12 @@ class Repository_of_films
 {
 public:
 	Repository_of_films();
-	~Repository_of_films();
-	void add_film();
+	// ~Repository_of_films();
+	void add_film(Film* film);
 	void read_file(std::string);
 	void add_to_file(Film*);
 private:
 	std::vector<Film*> films;
-	int counter;
+	int id_counter;
 };
+#endif

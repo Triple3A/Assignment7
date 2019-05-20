@@ -4,13 +4,14 @@
 #include "user.hpp"
 #include "film.hpp"
 
-class User;
+// class User;
 class Film;
 
 class Publisher : public User
 {
 public:
-	~Publisher();
+	Publisher(std::string _name, std::string _password, std::string _email, int _age, bool _publisher);
+	// ~Publisher();
 	int get_cash();
 	std::vector<Film*> get_published_films();
 	std::vector<User*> get_followers();
@@ -20,10 +21,10 @@ public:
 	void post_replies(int film_id, int comment_id, std::string);
 	void get_publish_films();
 	void get_money();
-	void get_followers();
+	// void get_followers();
 	void delete_film(int film_id);
 	void edit_film(int film_id, std::vector<std::string> edits);
-	void post_film(Film* film);
+	virtual void post_film(Film* film);
 private:
 	int cash;
 	std::vector<Film*> published_films;

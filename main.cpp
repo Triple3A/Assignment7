@@ -8,7 +8,9 @@ int main()
 {
 	Website_handler web;
 	string input;
-	input = web.get_input();
-	web.separator(input);
-	web.processing_inputs();
+	while(getline(cin, input))
+	{
+		web.separator(input);
+		web.processing_inputs();
+	}
 }
