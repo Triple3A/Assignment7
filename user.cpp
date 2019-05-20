@@ -35,3 +35,8 @@ bool User::is_publisher()
 {
 	return publisher;
 }
+
+void User::charge_money(int amount)
+{
+	account += amount;
+}

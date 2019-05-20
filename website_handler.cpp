@@ -2,13 +2,14 @@
 
 Website_handler::Website_handler()
 {
+	cash = 0;
 	users = new Repository_of_users();
 	films = new Repository_of_films();
 }
 
-void Website_handler::get_input(std::string& input)
+void Website_handler::print_ok()
 {
-	getline(std::cin, input);
+	std::cout << "OK" << '\n';
 }
 
 void Website_handler::separator(std::string input)
@@ -153,8 +154,8 @@ void Website_handler::post()
 		login();
 	else if(is_films())
 		post_films();
-	// else if(is_money())
-	// 	money();
+	else if(is_money())
+		money();
 	// else if(is_replies())
 	// 	replies();
 	// else if(is_followers())
@@ -233,7 +234,7 @@ void Website_handler::signup()
 			i++;
 			age = std::stoi(inputs[i]);
 		}
-		else if(inputs[i] == PUBLISHED)
+		else if(inputs[i] == PUBLISHER)
 		{
 			i++;
 			if(inputs[i] == "true")
@@ -248,7 +249,7 @@ void Website_handler::signup()
 		login_user = new User(username, password, email, age, false);
 	users->add_user(login_user);
 	std::cout << login_user->get_id() << '\n';
-	std::cout << "OK" << '\n';
+	print_ok();
 }
 
 void Website_handler::login()
@@ -273,7 +274,7 @@ void Website_handler::login()
 	}
 	login_user = users->search_user(username, password);
 	std::cout << login_user->get_id() << '\n';
-	std::cout << "OK" << '\n';
+	print_ok();
 }
 
 void Website_handler::post_films()
@@ -282,8 +283,8 @@ void Website_handler::post_films()
 	int length, price;
 	// if(inputs[2] != "?")
 	// 	throw Bad_request();
-	// if(!login_user->is_publisher())
-// 		throw Permission_denied();
+	if(!login_user->is_publisher())
+		throw Permission_denied();
 	for(int i = 3; i < inputs.size() - 1; i++)
 	{
 		if(inputs[i] == NAME)
@@ -324,5 +325,34 @@ void Website_handler::post_films()
 	films->add_film(film);
 	login_user->post_film(film);
 	std::cout << film->get_id() << '\n';
-	std::cout << "OK" << '\n';
+	print_ok();
+}
+
+void Website_handler::money()
+{
+	int amount;
+	if(inputs.size() == 2)
+	{
+		if(!login_user->is_publisher())
+			throw Permission_denied();
+		amount = login_user->get_money();
+		cash -= amount;
+	}
+	else
+	{
+	// if(inputs[2] != "?")
+	// 	throw Bad_request();
+		for(int i = 3; i < inputs.size(); i++)
+		{
+			if(inputs[i] == AMOUNT)
+			{
+				i++;
+				amount = std::stoi(inputs[i]);
+			}
+		// else
+		// 	throw Bad_request();	
+		}
+		login_user->charge_money(amount);
+	}
+	print_ok();
 }

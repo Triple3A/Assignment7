@@ -20,7 +20,7 @@ public:
 	void delete_comment(int film_id, int comment_id);
 	void post_replies(int film_id, int comment_id, std::string);
 	void get_publish_films();
-	void get_money();
+	virtual int get_money();
 	// void get_followers();
 	void delete_film(int film_id);
 	void edit_film(int film_id, std::vector<std::string> edits);

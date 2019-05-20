@@ -28,21 +28,23 @@ const std::string USERNAME = "username";
 const std::string PASSWORD = "password";
 const std::string AGE = "age";
 const std::string EMAIL = "email";
+const std::string PUBLISHER = "publisher";
 const std::string NAME = "name";
 const std::string YEAR = "year";
 const std::string LENGTH = "length";
 const std::string PRICE = "price";
 const std::string SUMMARY = "summary";
 const std::string DIRECTOR = "director";
+const std::string AMOUNT = "amount";
 
 class Website_handler
 {
 public:
 	Website_handler();
 	// ~Website_handler();
-	void get_input(std::string&);
 	void separator(std::string);
 	void processing_inputs();
+	void print_ok();
 	// void read_files();
 	// void add_to_files();
 	void add_money(int amount);
@@ -72,7 +74,7 @@ public:
 	void signup();
 	void login();
 	void post_films();
-	// void money();
+	void money();
 	// void replies();
 	// void followers();
 	// void buy();

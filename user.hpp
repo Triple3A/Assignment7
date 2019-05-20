@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-class Permision_denied {};
+class Permission_denied {};
 class Film;
 
 class User
@@ -38,6 +38,7 @@ public:
 	void follow_publisher(int publisher_id);
 	bool is_publisher();
 	virtual void post_film(Film* film) {};
+	virtual int get_money() {};
 protected:
 	std::string name;
 	std::string password;
