@@ -11,3 +11,13 @@ void Repository_of_films::add_film(Film* film)
 	id_counter++;
 	films.push_back(film);
 }
+
+Film* Repository_of_films::search_film_by_id(int id)
+{
+	for(int i = 0; i < films.size(); i++)
+	{
+		if(films[i]->get_id() == id)
+			return films[i];
+	}
+	// throw Not_found();
+}

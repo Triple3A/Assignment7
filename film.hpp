@@ -5,6 +5,9 @@
 #include "publisher.hpp"
 // #include "comment.hpp"
 
+const float WEAK_RATE = 5.0;
+const float NORMAL_RATE = 8.0;
+
 class Publisher;
 // class Comment;
 
@@ -17,16 +20,21 @@ public:
 	void edit(std::vector<std::string> edits);
 	int get_id();
 	void set_id(int _id);
+	int get_price();
+	std::string get_name();
 	// void add_comment(Comment* comment);
 	void add_score(float score);
 	int get_number_of_scores();
 	void calculate_rate();
+	int calculate_price();
+	float get_rate();
 	bool is_weak();
 	bool is_normal();
 	bool is_good();
-	void set_publisher(User* _publisher);
+	void set_publisher(Publisher* _publisher);
+	Publisher* get_publisher();
 private:
-	User* publisher;
+	Publisher* publisher;
 	// Repository_of_comments* comments;
 	int id;
 	std::string name;

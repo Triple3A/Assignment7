@@ -9,8 +9,9 @@ public:
 	Repository_of_films();
 	// ~Repository_of_films();
 	void add_film(Film* film);
-	void read_file(std::string);
-	void add_to_file(Film*);
+	Film* search_film_by_id(int id);
+	// void read_file(std::string);
+	// void add_to_file(Film*);
 private:
 	std::vector<Film*> films;
 	int id_counter;

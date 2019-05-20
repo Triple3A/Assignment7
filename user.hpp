@@ -30,7 +30,7 @@ public:
 	void show_purchased();
 	void post_comment(int film_id, std::string);
 	void post_rate(int film_id, float score);
-	void buy(int film_id);
+	void buy(Film* film);
 	void add_film_to_purchased(Film* film);
 	void get_details_of_film(int film_id);
 	bool is_purchased(int film_id);

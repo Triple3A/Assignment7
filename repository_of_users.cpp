@@ -19,5 +19,5 @@ User* Repository_of_users::search_user(std::string username, std::string passwor
 		if(users[i]->get_name() == username && users[i]->get_password() == password)
 			return users[i];
 	}
-	// throw Bad_request();
+	throw Bad_request();
 }

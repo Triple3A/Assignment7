@@ -40,3 +40,15 @@ void User::charge_money(int amount)
 {
 	account += amount;
 }
+
+void User::buy(Film* film)
+{
+	purchased_films.push_back(film);
+	int price = film->get_price();
+	account -= price; 
+}
+
+void User::add_unread_message(std::string message)
+{
+	unread_messages.push_back(message);
+}

@@ -3,6 +3,9 @@
 
 #include "user.hpp"
 
+class User;
+class Bad_request {};
+
 const std::string USERS_FILE_NAME = "Users.txt";
 
 class Repository_of_users
