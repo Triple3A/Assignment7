@@ -17,6 +17,7 @@ public:
 	std::vector<User*> get_followers();
 	
 	void add_money(int amount);
+	virtual void add_follower(User* user);
 	void delete_comment(int film_id, int comment_id);
 	void post_replies(int film_id, int comment_id, std::string);
 	void get_publish_films();
@@ -25,6 +26,9 @@ public:
 	void delete_film(int film_id);
 	void edit_film(int film_id, std::vector<std::string> edits);
 	virtual void post_film(Film* film);
+	
+	void send_notif_to_followers();
+	void send_notif_to_follower(User*);
 private:
 	int cash;
 	std::vector<Film*> published_films;

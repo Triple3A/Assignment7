@@ -4,6 +4,7 @@
 #include <vector>
 
 class Permission_denied {};
+class Not_found {};
 class Film;
 
 class User
@@ -36,10 +37,10 @@ public:
 	void get_details_of_film(int film_id);
 	bool is_purchased(int film_id);
 	void charge_money(int amount);
-	void follow_publisher(int publisher_id);
 	bool is_publisher();
 	virtual void post_film(Film* film) {};
 	virtual int get_money() {};
+	virtual void add_follower(User* user) {};
 protected:
 	std::string name;
 	std::string password;

@@ -21,3 +21,13 @@ User* Repository_of_users::search_user(std::string username, std::string passwor
 	}
 	throw Bad_request();
 }
+
+User* Repository_of_users::search_publisher(int user_id)
+{
+	for(int i = 0; i < users.size(); i++)
+	{
+		if(users[i]->get_id() == user_id && users[i]->is_publisher())
+			return users[i];
+	}
+	throw Not_found();
+}

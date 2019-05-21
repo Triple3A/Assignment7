@@ -15,6 +15,7 @@ public:
 	~Repository_of_users();
 	void add_user(User*);
 	User* search_user(std::string username, std::string password);
+	User* search_publisher(int user_id);
 	// void read_file(std::string);
 	// void add_to_file();
 private:
