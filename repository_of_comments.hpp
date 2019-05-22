@@ -9,6 +9,7 @@ public:
 	Repository_of_comments();
 	// ~Repository_of_comments();
 	void add_comment(Comment*);
+	Comment* search_comment(int comment_id);
 	// void read_file(std::string);
 	// void add_to_file(Comment*);
 private:

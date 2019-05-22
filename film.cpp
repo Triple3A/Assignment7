@@ -88,3 +88,8 @@ void Film::add_comment(Comment* comment)
 {
 	comments->add_comment(comment);
 }
+
+Comment* Film::search_comment(int comment_id)
+{
+	return comments->search_comment(comment_id);
+}

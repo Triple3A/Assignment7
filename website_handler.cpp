@@ -157,8 +157,8 @@ void Website_handler::post()
 		post_films();
 	else if(is_money())
 		money();
-	// else if(is_replies())
-	// 	replies();
+	else if(is_replies())
+		replies();
 	else if(is_followers())
 		followers();
 	else if(is_buy())
@@ -167,8 +167,8 @@ void Website_handler::post()
 		rate();
 	else if(is_comments())
 		comments();
-	// else
-	// 	throw Not_found();
+	else
+		throw Not_found();
 }
 
 // void Website_handler::get()
@@ -446,9 +446,46 @@ void Website_handler::comments()
 			throw Bad_request();
 	}
 	Film* film = login_user->search_film(film_id);
-	Comment* comment = new Comment(content);
+	Comment* comment = new Comment(content, login_user);
 	film->add_comment(comment);
+	std::cout << comment->get_id() << '\n';
 	send_notif_add_comment(login_user, film->get_publisher(), film);
+}
+
+void Website_handler::replies()
+{
+	if(inputs[2] != "?")
+		throw Bad_request();
+	if(!login_user->is_publisher())
+		throw Permission_denied();
+	int film_id, comment_id;
+	std::string content;
+	for(int i = 3; i < inputs.size() - 1; i++)
+	{
+		if(inputs[i] == FILM_ID)
+		{
+			i++;
+			film_id = std::stoi(inputs[i]);
+		}
+		else if(inputs[i] == COMMENT_ID)
+		{
+			i++;
+			comment_id = std::stoi(inputs[i]);
+		}
+		else if(inputs[i] == CONTENT)
+		{
+			i++;
+			content = inputs[i];
+		}
+		else
+			throw Bad_request();
+	}
+	Film* film = login_user->search_published_film(film_id);
+	Comment* comment = film->search_comment(comment_id);
+	comment->add_reply(content);
+	std::cout << comment->get_id() << '\n';
+	std::cout << comment->get_owner()->get_id() << '\n';
+ 	send_notif_reply_comment(comment->get_owner(), login_user);
 }
 
 void Website_handler::send_notif_buy_film(User* user, Publisher* publisher, Film* film)
@@ -491,4 +528,13 @@ void Website_handler::send_notif_add_comment(User* user, Publisher* publisher, F
 	message += " with id " + std::to_string(film->get_id());
 	message += ".";
 	publisher->add_unread_message(message);
+}
+
+void Website_handler::send_notif_reply_comment(User* owner, User* publisher)
+{
+	std::string message;
+	message = "Publisher " + publisher->get_name();
+	message += " with id " + std::to_string(publisher->get_id());
+	message += " reply to your comment.";
+	owner->add_unread_message(message);
 }

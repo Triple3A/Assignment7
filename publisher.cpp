@@ -46,3 +46,13 @@ void Publisher::send_notif_to_follower(User* follower)
 	message += " register new film.";
 	follower->add_unread_message(message);
 }
+
+Film* Publisher::search_published_film(int film_id)
+{
+	for(int i = 0; i < published_films.size(); i++)
+	{
+		if(published_films[i]->get_id() == film_id)
+			return published_films[i];
+	}
+	throw Not_found();
+}

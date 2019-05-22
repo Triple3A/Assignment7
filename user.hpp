@@ -41,6 +41,7 @@ public:
 	virtual void post_film(Film* film) {};
 	virtual int get_money() {};
 	virtual void add_follower(User* user) {};
+	virtual Film* search_published_film(int film_id) {};
 protected:
 	std::string name;
 	std::string password;
