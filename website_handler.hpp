@@ -71,7 +71,7 @@ public:
 	bool is_purchased();
 	bool is_notifications();
 	
-	// void put();
+	void put();
 	// void get();
 	void post();
 	void _delete();
@@ -85,15 +85,15 @@ public:
 	void buy();
 	void rate();
 	void comments();
-	//
+
 	// void get_followers();
 	// void published();
 	// void get_films();
 	// void purchased();
 	// void notifications();
-	//
-	// void put_film();
-	//
+
+	void put_film();
+
 	void delete_film();
 	void delete_comment();
 	

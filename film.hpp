@@ -17,7 +17,7 @@ public:
 	Film(std::string _name, std::string _year, int _length, int _price, std::string _summary, std::string _director);
 	// ~Film();
 	void sold();
-	void edit(std::vector<std::string> edits);
+	void edit(std::string _name, std::string _year, std::string _length, std::string _price, std::string _summary, std::string _director);
 	int get_id();
 	void set_id(int _id);
 	int get_price();
@@ -34,6 +34,7 @@ public:
 	bool is_good();
 	void set_publisher(Publisher* _publisher);
 	Publisher* get_publisher();
+	bool is_not_null(std::string);
 private:
 	Publisher* publisher;
 	Repository_of_comments* comments;

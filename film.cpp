@@ -98,3 +98,26 @@ void Film::delete_comment(int comment_id)
 {
 	comments->delete_comment(comment_id);
 }
+
+void Film::edit(std::string _name, std::string _year, std::string _length, std::string _price, std::string _summary, std::string _director)
+{
+	if(is_not_null(_name))
+		name = _name;
+	if(is_not_null(_year))
+		year = _year;
+	if(is_not_null(_summary))
+		summary = _summary;
+	if(is_not_null(_length))
+		length = std::stoi(_length);
+	if(is_not_null(_price))
+		price = std::stoi(_price);
+	if(is_not_null(_director))
+		director = _director;
+}
+
+bool Film::is_not_null(std::string s)
+{
+	if(s == "")
+		return false;
+	return true;
+}

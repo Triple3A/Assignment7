@@ -135,10 +135,11 @@ void Website_handler::processing_inputs()
 	// {
 	// 	get();
 	// }
-	// else if(is_put())
-	// {
-	// 	put();
-	// }
+	else if(is_put())
+	{
+		put();
+		print_ok();
+	}
 	else if(is_delete())
 	{
 		_delete();
@@ -188,14 +189,14 @@ void Website_handler::post()
 // 	// 	throw Not_found();
 // }
 
-// void Website_handler::put()
-// {
-// 	if(is_films())
-// 		put_film();
-// 	// else
-// 	// 	throw Not_found();
-// }
-//
+void Website_handler::put()
+{
+	if(is_films())
+		put_film();
+	else
+		throw Not_found();
+}
+
 void Website_handler::_delete()
 {
 	if(is_films())
@@ -548,7 +549,7 @@ void Website_handler::delete_film()
 	if(inputs[2] != "?")
 		throw Bad_request();
 	int film_id;
-	for(int i = 3; i < inputs.size(); i++)
+	for(int i = 3; i < inputs.size() - 1; i++)
 	{
 		if(inputs[i] == FILM_ID)
 		{
@@ -570,7 +571,7 @@ void Website_handler::delete_comment()
 	if(inputs[2] != "?")
 		throw Bad_request();
 	int comment_id, film_id;
-	for(int i = 3; i < inputs.size(); i++)
+	for(int i = 3; i < inputs.size() - 1; i++)
 	{
 		if(inputs[i] == COMMENT_ID)
 		{
@@ -587,4 +588,59 @@ void Website_handler::delete_comment()
 	}
 	Film* film = films->search_film_by_id(film_id);
 	film->delete_comment(comment_id);
+}
+
+
+
+
+void Website_handler::put_film()
+{
+	if(inputs[2] != "?")
+		throw Bad_request();
+	int film_id;
+	std::string name = "", year = "", summary = "", director = "", length = "", price = "";
+	for(int i = 3; i < inputs.size() - 1; i++)
+	{
+		if(inputs[i] == FILM_ID)
+		{
+			i++;
+			film_id = std::stoi(inputs[i]);
+		}
+		else if(inputs[i] == NAME)
+		{
+			i++;
+			name = inputs[i];
+		}
+		else if(inputs[i] == YEAR)
+		{
+			i++;
+			year = inputs[i];
+		}
+		else if(inputs[i] == LENGTH)
+		{
+			i++;
+			length = inputs[i];
+		}
+		else if(inputs[i] == PRICE)
+		{
+			i++;
+			price = inputs[i];
+		}
+		else if(inputs[i] == SUMMARY)
+		{
+			i++;
+			summary = inputs[i];
+		}
+		else if(inputs[i] == DIRECTOR)
+		{
+			i++;
+			director = inputs[i];
+		}
+		else
+			throw Bad_request();
+	}
+	Film* film = films->search_film_by_id(film_id);
+	if(film->get_publisher() != login_user)
+		throw Permission_denied();
+	film->edit(name, year, length, price, summary, director);
 }
