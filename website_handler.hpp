@@ -74,7 +74,7 @@ public:
 	// void put();
 	// void get();
 	void post();
-	// void _delete();
+	void _delete();
 	
 	void signup();
 	void login();
@@ -94,7 +94,7 @@ public:
 	//
 	// void put_film();
 	//
-	// void delete_film();
+	void delete_film();
 	// void delete_comment();
 	
 	void send_notif_buy_film(User* user, Publisher* publisher, Film* film);

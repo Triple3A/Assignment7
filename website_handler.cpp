@@ -139,12 +139,13 @@ void Website_handler::processing_inputs()
 	// {
 	// 	put();
 	// }
-	// else if(is_delete())
-	// {
-	// 	_delete();
-	// }
-	// else
-	// 	throw Bad_request();
+	else if(is_delete())
+	{
+		_delete();
+		print_ok();
+	}
+	else
+		throw Bad_request();
 }
 
 void Website_handler::post()
@@ -195,15 +196,15 @@ void Website_handler::post()
 // 	// 	throw Not_found();
 // }
 //
-// void Website_handler::_delete()
-// {
-// 	if(is_films())
-// 		delete_film();
+void Website_handler::_delete()
+{
+	if(is_films())
+		delete_film();
 // 	else if(is_comments())
 // 		delete_comment();
-// 	// else
-// 	// 	throw Not_found();
-// }
+	else
+		throw Not_found();
+}
 
 
 void Website_handler::signup()
@@ -537,4 +538,29 @@ void Website_handler::send_notif_reply_comment(User* owner, User* publisher)
 	message += " with id " + std::to_string(publisher->get_id());
 	message += " reply to your comment.";
 	owner->add_unread_message(message);
+}
+
+
+
+
+void Website_handler::delete_film()
+{
+	if(inputs[2] != "?")
+		throw Bad_request();
+	int film_id;
+	for(int i = 3; i < inputs.size(); i++)
+	{
+		if(inputs[i] == FILM_ID)
+		{
+			i++;
+			film_id = std::stoi(inputs[i]);
+		}
+		else
+			throw Bad_request();
+	}
+	Film* film = films->search_film_by_id(film_id);
+	if(film->get_publisher() != login_user)
+		throw Permission_denied();
+	films->delete_film(film_id);
+	login_user->delete_film(film_id);
 }

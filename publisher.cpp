@@ -56,3 +56,19 @@ Film* Publisher::search_published_film(int film_id)
 	}
 	throw Not_found();
 }
+
+int Publisher::get_position_of_element(int film_id)
+{
+	for(int i = 0; i < published_films.size(); i++)
+	{
+		if(published_films[i]->get_id() == film_id)
+			return i;
+	}
+	throw Not_found();
+}
+
+void Publisher::delete_film(int film_id)
+{
+	int position = get_position_of_element(film_id);
+	published_films.erase(published_films.begin() + position);
+}
