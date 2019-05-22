@@ -93,3 +93,8 @@ Comment* Film::search_comment(int comment_id)
 {
 	return comments->search_comment(comment_id);
 }
+
+void Film::delete_comment(int comment_id)
+{
+	comments->delete_comment(comment_id);
+}

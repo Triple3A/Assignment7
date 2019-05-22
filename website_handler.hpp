@@ -95,7 +95,7 @@ public:
 	// void put_film();
 	//
 	void delete_film();
-	// void delete_comment();
+	void delete_comment();
 	
 	void send_notif_buy_film(User* user, Publisher* publisher, Film* film);
 	void send_notif_rate_film(User* user, Publisher* publisher, Film* film);

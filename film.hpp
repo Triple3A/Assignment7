@@ -23,6 +23,7 @@ public:
 	int get_price();
 	std::string get_name();
 	void add_comment(Comment* comment);
+	void delete_comment(int comment_id);
 	Comment* search_comment(int comment_id);
 	void add_score(float score);
 	void calculate_rate();

@@ -200,8 +200,8 @@ void Website_handler::_delete()
 {
 	if(is_films())
 		delete_film();
-// 	else if(is_comments())
-// 		delete_comment();
+	else if(is_comments())
+		delete_comment();
 	else
 		throw Not_found();
 }
@@ -563,4 +563,28 @@ void Website_handler::delete_film()
 		throw Permission_denied();
 	films->delete_film(film_id);
 	login_user->delete_film(film_id);
+}
+
+void Website_handler::delete_comment()
+{
+	if(inputs[2] != "?")
+		throw Bad_request();
+	int comment_id, film_id;
+	for(int i = 3; i < inputs.size(); i++)
+	{
+		if(inputs[i] == COMMENT_ID)
+		{
+			i++;
+			comment_id = std::stoi(inputs[i]);
+		}
+		else if(inputs[i] == FILM_ID)
+		{
+			i++;
+			film_id = std::stoi(inputs[i]);
+		}
+		else
+			throw Bad_request();
+	}
+	Film* film = films->search_film_by_id(film_id);
+	film->delete_comment(comment_id);
 }
