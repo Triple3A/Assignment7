@@ -2,8 +2,8 @@ CC := g++ -std=c++11
 
 all: netflix.out
 	
-netflix.out: main.o website_handler.o repository_of_users.o user.o repository_of_films.o film.o publisher.o
-	$(CC) main.o website_handler.o repository_of_users.o user.o repository_of_films.o film.o publisher.o -o netflix.out
+netflix.out: main.o website_handler.o repository_of_users.o user.o repository_of_films.o film.o publisher.o repository_of_comments.o comment.o
+	$(CC) main.o website_handler.o repository_of_users.o user.o repository_of_films.o film.o publisher.o repository_of_comments.o comment.o -o netflix.out
 	
 main.o: website_handler.hpp main.cpp
 	$(CC) -c main.cpp -o main.o
@@ -25,6 +25,12 @@ film.o: publisher.hpp film.cpp
 	
 publisher.o: user.hpp film.hpp publisher.cpp
 	$(CC) -c publisher.cpp -o publisher.o
+	
+repository_of_comments.o: comment.hpp repository_of_comments.cpp
+	$(CC) -c repository_of_comments.cpp -o repository_of_comments.o
+	
+comment.o: comment.cpp
+	$(CC) -c comment.cpp -o comment.o
 	
 .PHONY: clean
 clean:

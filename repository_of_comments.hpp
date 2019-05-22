@@ -7,11 +7,12 @@ class Repository_of_comments
 {
 public:
 	Repository_of_comments();
-	~Repository_of_comments();
-	void add_comment();
-	void read_file(std::string);
-	void add_to_file(Comment*);
+	// ~Repository_of_comments();
+	void add_comment(Comment*);
+	// void read_file(std::string);
+	// void add_to_file(Comment*);
 private:
 	std::vector<Comment*> comments;
 	int id_counter;
 };
+#endif

@@ -4,6 +4,7 @@ Film::Film(std::string _name, std::string _year, int _length, int _price, std::s
 	: name(_name), year(_year), length(_length), price(_price), summary(_summary), director(_director) 
 {
 	rate = 0.0;
+	comments = new Repository_of_comments();
 };
 
 void Film::set_id(int _id)
@@ -81,4 +82,9 @@ void Film::calculate_rate()
 		sum += scores[i];
 	}
 	rate = sum / scores.size();
+}
+
+void Film::add_comment(Comment* comment)
+{
+	comments->add_comment(comment);
 }

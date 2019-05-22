@@ -165,8 +165,8 @@ void Website_handler::post()
 		buy();
 	else if(is_rate())
 		rate();
-	// else if(is_comments())
-	// 	comments();
+	else if(is_comments())
+		comments();
 	// else
 	// 	throw Not_found();
 }
@@ -401,7 +401,7 @@ void Website_handler::rate()
 	}
 	Film* film = login_user->search_film(film_id);
 	login_user->post_rate(film, score);
-	send_film_rate_film(login_user, film->get_publisher(), film);
+	send_notif_rate_film(login_user, film->get_publisher(), film);
 }
 
 void Website_handler::followers()
@@ -424,6 +424,33 @@ void Website_handler::followers()
 	send_notif_to_following(login_user, publisher);
 }
 
+void Website_handler::comments()
+{
+	int film_id;
+	std::string content;
+	if(inputs[2] != "?")
+		throw Bad_request();
+	for(int i = 3; i < inputs.size() - 1; i++)
+	{
+		if(inputs[i] == FILM_ID)
+		{
+			i++;
+			film_id = std::stoi(inputs[i]);
+		}
+		else if(inputs[i] == CONTENT)
+		{
+			i++;
+			content = inputs[i];
+		}
+		else
+			throw Bad_request();
+	}
+	Film* film = login_user->search_film(film_id);
+	Comment* comment = new Comment(content);
+	film->add_comment(comment);
+	send_notif_add_comment(login_user, film->get_publisher(), film);
+}
+
 void Website_handler::send_notif_buy_film(User* user, Publisher* publisher, Film* film)
 {
 	std::string message;
@@ -435,7 +462,7 @@ void Website_handler::send_notif_buy_film(User* user, Publisher* publisher, Film
 	publisher->add_unread_message(message);
 }
 
-void Website_handler::send_film_rate_film(User* user, Publisher* publisher, Film* film)
+void Website_handler::send_notif_rate_film(User* user, Publisher* publisher, Film* film)
 {
 	std::string message;
 	message = "User " + user->get_name();
@@ -452,5 +479,16 @@ void Website_handler::send_notif_to_following(User* user, User* publisher)
 	message = "User " + user->get_name();
 	message += " with id " + std::to_string(user->get_id());
 	message += " follow you.";
+	publisher->add_unread_message(message);
+}
+
+void Website_handler::send_notif_add_comment(User* user, Publisher* publisher, Film* film)
+{
+	std::string message;
+	message = "User " + user->get_name();
+	message += " with id " + std::to_string(user->get_id());
+	message += " comment on your film " + film->get_name();
+	message += " with id " + std::to_string(film->get_id());
+	message += ".";
 	publisher->add_unread_message(message);
 }

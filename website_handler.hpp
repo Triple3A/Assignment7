@@ -39,6 +39,7 @@ const std::string AMOUNT = "amount";
 const std::string FILM_ID = "film_id";
 const std::string SCORE = "score";
 const std::string USER_ID = "user_id";
+const std::string CONTENT = "content";
 
 class Website_handler
 {
@@ -82,7 +83,7 @@ public:
 	void followers();
 	void buy();
 	void rate();
-	// void comments();
+	void comments();
 	//
 	// void get_followers();
 	// void published();
@@ -96,8 +97,9 @@ public:
 	// void delete_comment();
 	
 	void send_notif_buy_film(User* user, Publisher* publisher, Film* film);
-	void send_film_rate_film(User* user, Publisher* publisher, Film* film);
+	void send_notif_rate_film(User* user, Publisher* publisher, Film* film);
 	void send_notif_to_following(User* user, User* publisher);
+	void send_notif_add_comment(User*, Publisher*, Film*);
 private:
 	int cash;
 	std::vector<std::string> inputs;

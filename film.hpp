@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "publisher.hpp"
-// #include "comment.hpp"
+#include "repository_of_comments.hpp"
 
 const float WEAK_RATE = 5.0;
 const float NORMAL_RATE = 8.0;
@@ -22,9 +22,8 @@ public:
 	void set_id(int _id);
 	int get_price();
 	std::string get_name();
-	// void add_comment(Comment* comment);
+	void add_comment(Comment* comment);
 	void add_score(float score);
-	// int get_number_of_scores();
 	void calculate_rate();
 	int calculate_price();
 	float get_rate();
@@ -35,7 +34,7 @@ public:
 	Publisher* get_publisher();
 private:
 	Publisher* publisher;
-	// Repository_of_comments* comments;
+	Repository_of_comments* comments;
 	int id;
 	std::string name;
 	std::string year;
