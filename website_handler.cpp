@@ -182,17 +182,15 @@ void Website_handler::post()
 void Website_handler::get()
 {
 	if(is_followers())
-		get_followers();
-// 	else if(is_published())
-// 		published();
+		show_followers();
+	else if(is_published() || is_purchased() || (is_films() && inputs[3] != FILM_ID))
+		show_films();
 // 	else if(is_films())
-// 		get_films();
-	else if(is_purchased())
-		get_purchased();
+// 		show_films();
 	else if(is_notifications())
-		notifications();
+		show_notifications();
 	else if(is_notifications_read())
-		notifications_read();
+		show_notifications_read();
 	else
 		throw Not_found();
 }
@@ -657,7 +655,7 @@ void Website_handler::put_film()
 
 
 
-void Website_handler::get_followers()
+void Website_handler::show_followers()
 {
 	if(inputs.size() > 2)
 		throw Bad_request();
@@ -681,13 +679,13 @@ void Website_handler::get_followers()
 	}
 }
 
-void Website_handler::notifications()
+void Website_handler::show_notifications()
 {
 	std::vector<std::string> messages = login_user->get_and_read_unread_messages();
 	print_notifications(messages, messages.size());
 }
 
-void Website_handler::notifications_read()
+void Website_handler::show_notifications_read()
 {
 	if(inputs[3] != "?")
 		throw Bad_request();
@@ -719,12 +717,12 @@ void Website_handler::print_notifications(std::vector<std::string> messages, int
 	}
 }
 
-void Website_handler::get_purchased()
+void Website_handler::show_films()
 {
 	if(inputs[2] != "?")
 		throw Bad_request();
-	std::string name = "", price = "", min_year = "", max_year = "", director = "";
-	for(int i = 3; i < inputs.size(); i++)
+	std::string name = "", price = "", min_year = "", max_year = "", director = "", min_rate = "";
+	for(int i = 3; i < inputs.size() - 1; i++)
 	{
 		if(inputs[i] == NAME)
 		{
@@ -751,11 +749,40 @@ void Website_handler::get_purchased()
 			i++;
 			director = inputs[i];
 		}
+		else if(inputs[i] == MIN_RATE)
+		{
+			i++;
+			min_rate = inputs[i];
+		}
 		else 
 			throw Bad_request();
 	}
-	std::vector<Film*> purchased_films = login_user->get_purchased(name, price, min_year, max_year, director);
-	print_films(purchased_films);
+	std::vector<Film*> _films;
+	if(is_purchased())
+		_films = login_user->get_purchased(name, price, min_year, max_year, director);
+	else if(is_published())
+	{
+		if(login_user->is_publisher())
+			_films = login_user->get_published_films(name, price, min_year, max_year, director, min_rate);
+		else 
+			throw Permission_denied();
+	}
+	// else if(is_films())
+		// _films = films->get_films(name, price, min_year, max_year, director, min_rate);
+	sort_by_id(_films);
+	print_films(_films);
+}
+
+
+
+
+
+void Website_handler::sort_by_id(std::vector<Film*>& _films)
+{
+	for(int i = 0; i < _films.size(); i++)
+		for(int j = 0; j < i; j++)
+			if(_films[j]->get_id() > _films[i]->get_id())
+				std::swap(_films[i], _films[j]);
 }
 
 void Website_handler::print_films(std::vector<Film*> _films)

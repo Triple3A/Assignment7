@@ -46,6 +46,7 @@ const std::string COMMENT_ID = "comment_id";
 const std::string LIMIT = "limit";
 const std::string MIN_YEAR = "min_year";
 const std::string MAX_YEAR = "max_year";
+const std::string MIN_RATE = "min_rate";
 const int PRECISION = 2;
 
 class Website_handler
@@ -91,13 +92,14 @@ public:
 	void buy();
 	void rate();
 	void comments();
+	
+	void sort_by_id(std::vector<Film*>&);
 
-	void get_followers();
-	// void published();
-	// void get_films();
-	void get_purchased();
-	void notifications();
-	void notifications_read();
+	void show_followers();
+	void show_films();
+	// void show_films();
+	void show_notifications();
+	void show_notifications_read();
 
 	void put_film();
 

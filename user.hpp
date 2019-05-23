@@ -52,6 +52,7 @@ public:
 	virtual void delete_film(int film_id) {};
 	virtual int get_position_of_element(int film_id) {};
 	virtual std::vector<User*> get_followers() {};
+	virtual std::vector<Film*> get_published_films(std::string _name, std::string price, std::string min_year, std::string max_year, std::string _director, std::string min_rate) {};
 protected:
 	std::string name;
 	std::string password;
