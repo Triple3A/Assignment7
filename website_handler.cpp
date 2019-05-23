@@ -191,7 +191,7 @@ void Website_handler::get()
 	else if(is_films())
 	{
 		show_details_of_film();
-		// recommend_films();
+		recommend_films();
 	}
 	else if(is_notifications())
 		show_notifications();
@@ -856,3 +856,49 @@ void Website_handler::print_comments(std::vector<Comment*> comments)
 	}
 	std::cout << '\n';
 }
+
+void Website_handler::recommend_films()
+{
+	std::vector<Film*> all_films = films->get_all_films();
+	sort_by_rate(all_films);
+	std::vector<Film*> recommendation_films;
+	for(int i = 0; i < all_films.size(); i++)
+	{
+		if(login_user->is_purchased(all_films[i]))
+			continue;
+		recommendation_films.push_back(all_films[i]);
+	}
+	print_recommendation_films(recommendation_films);
+}
+
+void Website_handler::print_recommendation_films(std::vector<Film*> recommendation_films)
+{
+	std::cout << "Recommendation Film\n";
+	std::cout << "#. Film Id | Film Name | Film Length | Film Director\n";
+	for(int i = 0; i < recommendation_films.size(); i++)
+	{
+		if(i > 3)
+			return;
+		std::cout << i + 1 << ". ";
+		std::cout << recommendation_films[i]->get_id() << " | ";
+		std::cout << recommendation_films[i]->get_name() << " | ";
+		std::cout << recommendation_films[i]->get_length() << " | ";
+		std::cout << recommendation_films[i]->get_director() << '\n';
+	}
+}
+
+void Website_handler::sort_by_rate(std::vector<Film*>& _films)
+{
+	for(int i = 0; i < _films.size(); i++)
+		for(int j = 0; j < i; j++)
+		{
+			if(_films[j]->get_rate() < _films[i]->get_rate())
+				std::swap(_films[i], _films[j]);
+			else if(_films[j]->get_rate() == _films[i]->get_rate())
+				if(_films[j]->get_id() > _films[i]->get_id())
+					std::swap(_films[i], _films[j]);
+		}
+}
+
+
+

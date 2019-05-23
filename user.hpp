@@ -34,7 +34,7 @@ public:
 	void get_details_of_film(int film_id);
 	void charge_money(int amount);
 	
-	bool is_purchased(int film_id);
+	bool is_purchased(Film* film);
 	bool is_publisher();
 	bool is_null(std::string s);
 	

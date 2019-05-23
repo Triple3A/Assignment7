@@ -173,4 +173,14 @@ std::vector<Film*> User::search_films_by_director(std::vector<Film*> films, std:
 	return searched;
 }
 
+bool User::is_purchased(Film* film)
+{
+	for(int i = 0; i < purchased_films.size(); i++)
+	{
+		if(purchased_films[i] == film)
+			return true;
+	}
+	return false;
+}
+
 

@@ -56,8 +56,6 @@ public:
 	// ~Website_handler();
 	void separator(std::string);
 	void processing_inputs();
-	// void read_files();
-	// void add_to_files();
 	void add_money(int amount);
 	
 	bool is_get();
@@ -94,6 +92,7 @@ public:
 	void comments();
 	
 	void sort_by_id(std::vector<Film*>&);
+	void sort_by_rate(std::vector<Film*>&);
 
 	void show_followers();
 	void show_films();
@@ -119,6 +118,7 @@ public:
 	void print_films(std::vector<Film*>);
 	void print_details_of_film(Film* film);
 	void print_comments(std::vector<Comment*> comments);
+	void print_recommendation_films(std::vector<Film*> recommendation_films);
 private:
 	int cash;
 	std::vector<std::string> inputs;

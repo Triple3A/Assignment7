@@ -16,6 +16,7 @@ public:
 	int get_position_of_film(int id);
 	void delete_film(int id);
 	std::vector<Film*> get_films(std::string _name, std::string _price, std::string min_year, std::string max_year, std::string _director, std::string min_rate);
+	std::vector<Film*> get_all_films();
 	
 	std::vector<Film*> search_films_by_name(std::vector<Film*>, std::string _name);
 	std::vector<Film*> search_films_by_price(std::vector<Film*>, std::string _price);

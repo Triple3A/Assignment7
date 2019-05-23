@@ -139,6 +139,9 @@ bool Repository_of_films::is_null(std::string s)
 	return false;
 }
 
-
+std::vector<Film*> Repository_of_films::get_all_films()
+{
+	return films;
+}
 
 
