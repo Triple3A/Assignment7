@@ -767,8 +767,8 @@ void Website_handler::show_films()
 		else 
 			throw Permission_denied();
 	}
-	// else if(is_films())
-		// _films = films->get_films(name, price, min_year, max_year, director, min_rate);
+	else if(is_films())
+		_films = films->get_films(name, price, min_year, max_year, director, min_rate);
 	sort_by_id(_films);
 	print_films(_films);
 }

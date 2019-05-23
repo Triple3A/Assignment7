@@ -8,12 +8,21 @@ class Repository_of_films
 public:
 	Repository_of_films();
 	// ~Repository_of_films();
+	
+	bool is_null(std::string s);
+	
 	void add_film(Film* film);
 	Film* search_film_by_id(int id);
 	int get_position_of_film(int id);
 	void delete_film(int id);
-	// void read_file(std::string);
-	// void add_to_file(Film*);
+	std::vector<Film*> get_films(std::string _name, std::string _price, std::string min_year, std::string max_year, std::string _director, std::string min_rate);
+	
+	std::vector<Film*> search_films_by_name(std::vector<Film*>, std::string _name);
+	std::vector<Film*> search_films_by_price(std::vector<Film*>, std::string _price);
+	std::vector<Film*> search_films_by_min_year(std::vector<Film*>, std::string min_year);
+	std::vector<Film*> search_films_by_max_year(std::vector<Film*>, std::string max_year);
+	std::vector<Film*> search_films_by_director(std::vector<Film*>, std::string _director);
+	std::vector<Film*> search_films_by_min_rate(std::vector<Film*>, std::string min_rate);
 private:
 	std::vector<Film*> films;
 	int id_counter;
