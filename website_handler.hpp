@@ -24,6 +24,7 @@ const std::string COMMENTS = "comments";
 const std::string PUBLISHED = "published";
 const std::string PURCHASED = "purchased";
 const std::string NOTIFICATIONS = "notifications";
+const std::string READ = "read";
 const std::string USERNAME = "username";
 const std::string PASSWORD = "password";
 const std::string AGE = "age";
@@ -41,6 +42,7 @@ const std::string SCORE = "score";
 const std::string USER_ID = "user_id";
 const std::string CONTENT = "content";
 const std::string COMMENT_ID = "comment_id";
+const std::string LIMIT = "limit";
 
 class Website_handler
 {
@@ -70,6 +72,7 @@ public:
 	bool is_published();
 	bool is_purchased();
 	bool is_notifications();
+	bool is_notifications_read();
 	
 	void put();
 	void get();
@@ -90,7 +93,9 @@ public:
 	// void published();
 	// void get_films();
 	// void purchased();
-	// void notifications();
+	void notifications();
+	void notifications_read();
+	void print_notifications(std::vector<std::string> messages, int limit);
 
 	void put_film();
 

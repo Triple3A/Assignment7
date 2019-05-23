@@ -117,9 +117,15 @@ bool Website_handler::is_purchased()
 		return true;
 	return false;
 }
+bool Website_handler::is_notifications_read()
+{
+	if(inputs[1] == NOTIFICATIONS && inputs[2] == READ)
+		return true;
+	return false;
+}
 bool Website_handler::is_notifications()
 {
-	if(inputs[1] == NOTIFICATIONS)
+	if(inputs[1] == NOTIFICATIONS && inputs.size() == 2)
 		return true;
 	return false;
 }
@@ -183,8 +189,10 @@ void Website_handler::get()
 // 		get_films();
 // 	else if(is_purchased())
 // 		purchased();
-// 	else if(is_notifications())
-// 		notifications();
+	else if(is_notifications())
+		notifications();
+	else if(is_notifications_read())
+		notifications_read();
 	else
 		throw Not_found();
 }
@@ -670,5 +678,43 @@ void Website_handler::get_followers()
 		std::cout << followers[i]->get_id() << " | ";
 		std::cout << followers[i]->get_name() << " | ";
 		std::cout << followers[i]->get_email() << '\n';
+	}
+}
+
+void Website_handler::notifications()
+{
+	std::vector<std::string> messages = login_user->get_and_read_unread_messages();
+	print_notifications(messages, messages.size());
+}
+
+void Website_handler::notifications_read()
+{
+	if(inputs[3] != "?")
+		throw Bad_request();
+	int limit;
+	for(int i = 4; i < inputs.size() - 1; i++)
+	{
+		if(inputs[i] == LIMIT)
+		{
+			i++;
+			limit = std::stoi(inputs[i]);
+		}
+		else
+			throw Bad_request();
+	}
+	std::vector<std::string> messages = login_user->get_read_messages();
+	if(limit > messages.size())
+		throw Bad_request();
+	print_notifications(messages, limit);
+}
+
+void Website_handler::print_notifications(std::vector<std::string> messages, int limit)
+{
+	int min = messages.size() - limit;
+	std::cout << "#. Notification Message" << '\n';
+	for(int i = messages.size() - 1; i >= min; i--)
+	{
+		std::cout << messages.size() - i << ". ";
+		std::cout << messages[i] << '\n';
 	}
 }

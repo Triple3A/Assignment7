@@ -72,3 +72,17 @@ void User::post_rate(Film* film, float score)
 {
 	film->add_score(score);
 }
+
+std::vector<std::string> User::get_and_read_unread_messages()
+{
+	std::vector<std::string> messages = unread_messages;
+	unread_messages.clear();
+	for(int i = 0; i < messages.size(); i++)
+		read_messages.push_back(messages[i]);
+	return messages;
+}
+
+std::vector<std::string> User::get_read_messages()
+{
+	return read_messages;
+}

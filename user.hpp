@@ -20,14 +20,11 @@ public:
 	int get_account();
 	// User operator=(User& user);
 	std::vector<Film*> get_films();
-	std::vector<std::string> get_unread_messages();
+	std::vector<std::string> get_and_read_unread_messages();
 	std::vector<std::string> get_read_messages();
 	void set_id(int _id);
 	
 	void add_unread_message(std::string);
-	void read_the_unread_messages();
-	void add_to_read_messages(std::string);
-	void get_read_messages(int limit);
 	void show_purchased();
 	void post_comment(int film_id, std::string);
 	void post_rate(Film* film, float score);
