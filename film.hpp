@@ -14,7 +14,7 @@ class Film
 {
 public:
 	Film(std::string _name, int _year, int _length, int _price, std::string _summary, std::string _director);
-	// ~Film();
+	~Film();
 	void sold();
 	void edit(std::string _name, std::string _year, std::string _length, std::string _price, std::string _summary, std::string _director);
 	

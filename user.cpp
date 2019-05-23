@@ -16,11 +16,6 @@ int User::get_id()
 	return id;
 }
 
-// User User::operator=(User& user)
-// {
-// 	return user;
-// }
-
 std::string User::get_name()
 {
 	return name;

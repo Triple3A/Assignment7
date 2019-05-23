@@ -7,6 +7,8 @@ Repository_of_films::Repository_of_films()
 
 void Repository_of_films::add_film(Film* film)
 {
+	 if(is_duplicate(film))
+		throw Bad_request();
 	film->set_id(id_counter);
 	id_counter++;
 	films.push_back(film);
@@ -19,7 +21,7 @@ Film* Repository_of_films::search_film_by_id(int id)
 		if(films[i]->get_id() == id)
 			return films[i];
 	}
-	// throw Not_found();
+	throw Not_found();
 }
 
 int Repository_of_films::get_position_of_film(int id)
@@ -29,7 +31,7 @@ int Repository_of_films::get_position_of_film(int id)
 		if(films[i]->get_id() == id)
 			return i;
 	}
-	// throw Not_found();
+	throw Not_found();
 }
 
 void Repository_of_films::delete_film(int id)
@@ -145,3 +147,12 @@ std::vector<Film*> Repository_of_films::get_all_films()
 }
 
 
+bool Repository_of_films::is_duplicate(Film* film)
+{
+	for(int i = 0; i < films.size(); i++)
+	{
+		if(films[i] == film)
+			return true;
+	}
+	return false;
+}

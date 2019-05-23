@@ -2,23 +2,20 @@
 #define USER_H
 #include <iostream>
 #include <vector>
+#include "exceptions.hpp"
 
-class Permission_denied {};
-class Not_found {};
 class Film;
 
 class User
 {
 public:
 	User(std::string _name, std::string _password, std::string _email, int _age, bool _publisher);
-	// ~User();
 	std::string get_name();
 	std::string get_password();
 	std::string get_email();
 	int get_age();
 	int get_id();
 	int get_account();
-	// User operator=(User& user);
 	std::vector<Film*> get_films();
 	std::vector<std::string> get_and_read_unread_messages();
 	std::vector<std::string> get_read_messages();

@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include "exceptions.hpp"
 
-// class Not_found {};
 class User;
 
 class Comment

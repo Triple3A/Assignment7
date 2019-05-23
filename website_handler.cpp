@@ -5,6 +5,13 @@ Website_handler::Website_handler()
 	cash = 0;
 	users = new Repository_of_users();
 	films = new Repository_of_films();
+	login_user = NULL;
+}
+
+Website_handler::~Website_handler()
+{
+	delete[] users;
+	delete[] films;
 }
 
 void Website_handler::print_ok()
@@ -140,6 +147,8 @@ void Website_handler::processing_inputs()
 		post();
 		print_ok();
 	}
+	else if(login_user == NULL)
+		throw Permission_denied();
 	else if(is_get())
 	{
 		get();
@@ -162,6 +171,8 @@ void Website_handler::post()
 {
 	if(is_signup())
 		signup();
+	else if(login_user == NULL)
+		throw Permission_denied();
 	else if(is_login())
 		login();
 	else if(is_films())
@@ -227,6 +238,8 @@ void Website_handler::signup()
 	bool is_publisher = false;
 	if(inputs[2] != "?")
 		throw Bad_request();
+	if(inputs.size() != 13 && inputs.size() != 11)
+		throw Bad_request();
 	for(int i = 3; i < inputs.size() - 1; i++)
 	{
 		if(inputs[i] == EMAIL)
@@ -263,13 +276,14 @@ void Website_handler::signup()
 	else
 		login_user = new User(username, password, email, age, false);
 	users->add_user(login_user);
-	std::cout << login_user->get_id() << '\n';
 }
 
 void Website_handler::login()
 {
 	std::string username, password;
 	if(inputs[2] != "?")
+		throw Bad_request();
+	if(inputs.size() != 7)
 		throw Bad_request();
 	for(int i = 3; i < inputs.size() - 1; i++)
 	{
@@ -287,7 +301,6 @@ void Website_handler::login()
 			throw Bad_request();
 	}
 	login_user = users->search_user(username, password);
-	std::cout << login_user->get_id() << '\n';
 }
 
 void Website_handler::post_films()
@@ -295,6 +308,8 @@ void Website_handler::post_films()
 	std::string name, summary, director;
 	int length, price, year;
 	if(inputs[2] != "?")
+		throw Bad_request();
+	if(inputs.size() != 15)
 		throw Bad_request();
 	if(!login_user->is_publisher())
 		throw Permission_denied();
@@ -336,7 +351,6 @@ void Website_handler::post_films()
 	Film* film = new Film(name, year, length, price, summary, director);
 	films->add_film(film);
 	login_user->post_film(film);
-	std::cout << film->get_id() << '\n';
 }
 
 void Website_handler::money()
@@ -351,8 +365,10 @@ void Website_handler::money()
 	}
 	else
 	{
-	if(inputs[2] != "?")
-		throw Bad_request();
+		if(inputs[2] != "?")
+			throw Bad_request();
+		if(inputs.size() != 5)
+			throw Bad_request();
 		for(int i = 3; i < inputs.size() - 1; i++)
 		{
 			if(inputs[i] == AMOUNT)
@@ -371,6 +387,8 @@ void Website_handler::buy()
 {
 	int film_id;
 	if(inputs[2] != "?")
+		throw Bad_request();
+	if(inputs.size() != 5)
 		throw Bad_request();
 	for(int i = 3; i < inputs.size() - 1; i++)
 	{
@@ -398,6 +416,8 @@ void Website_handler::rate()
 	int film_id;
 	if(inputs[2] != "?")
 		throw Bad_request();
+	if(inputs.size() != 7)
+		throw Bad_request();
 	for(int i = 3; i < inputs.size() - 1; i++)
 	{
 		if(inputs[i] == SCORE)
@@ -423,6 +443,8 @@ void Website_handler::followers()
 	int user_id;
 	if(inputs[2] != "?")
 		throw Bad_request();
+	if(inputs.size() != 5)
+		throw Bad_request();
 	for(int i = 3; i < inputs.size() - 1; i++)
 	{
 		if(inputs[i] == USER_ID)
@@ -444,6 +466,8 @@ void Website_handler::comments()
 	std::string content;
 	if(inputs[2] != "?")
 		throw Bad_request();
+	if(inputs.size() != 7)
+		throw Bad_request();
 	for(int i = 3; i < inputs.size() - 1; i++)
 	{
 		if(inputs[i] == FILM_ID)
@@ -462,13 +486,14 @@ void Website_handler::comments()
 	Film* film = login_user->search_film(film_id);
 	Comment* comment = new Comment(content, login_user);
 	film->add_comment(comment);
-	std::cout << comment->get_id() << '\n';
 	send_notif_add_comment(login_user, film->get_publisher(), film);
 }
 
 void Website_handler::replies()
 {
 	if(inputs[2] != "?")
+		throw Bad_request();
+	if(inputs.size() != 9)
 		throw Bad_request();
 	if(!login_user->is_publisher())
 		throw Permission_denied();
@@ -497,8 +522,6 @@ void Website_handler::replies()
 	Film* film = login_user->search_published_film(film_id);
 	Comment* comment = film->search_comment(comment_id);
 	comment->add_reply(content);
-	std::cout << comment->get_id() << '\n';
-	std::cout << comment->get_owner()->get_id() << '\n';
  	send_notif_reply_comment(comment->get_owner(), login_user);
 }
 
@@ -560,6 +583,10 @@ void Website_handler::delete_film()
 {
 	if(inputs[2] != "?")
 		throw Bad_request();
+	if(inputs.size() != 5)
+		throw Bad_request();
+	if(!login_user->is_publisher())
+		throw Permission_denied();
 	int film_id;
 	for(int i = 3; i < inputs.size() - 1; i++)
 	{
@@ -575,12 +602,13 @@ void Website_handler::delete_film()
 	if(film->get_publisher() != login_user)
 		throw Permission_denied();
 	films->delete_film(film_id);
-	login_user->delete_film(film_id);
 }
 
 void Website_handler::delete_comment()
 {
 	if(inputs[2] != "?")
+		throw Bad_request();
+	if(inputs.size() != 7)
 		throw Bad_request();
 	int comment_id, film_id;
 	for(int i = 3; i < inputs.size() - 1; i++)
@@ -687,6 +715,8 @@ void Website_handler::show_followers()
 
 void Website_handler::show_notifications()
 {
+	if(inputs.size() != 2)
+		throw Bad_request();
 	std::vector<std::string> messages = login_user->get_and_read_unread_messages();
 	print_notifications(messages, messages.size());
 }
@@ -694,6 +724,8 @@ void Website_handler::show_notifications()
 void Website_handler::show_notifications_read()
 {
 	if(inputs[3] != "?")
+		throw Bad_request();
+	if(inputs.size() != 6)
 		throw Bad_request();
 	int limit;
 	for(int i = 4; i < inputs.size() - 1; i++)
@@ -811,6 +843,8 @@ void Website_handler::show_details_of_film()
 {
 	if(inputs[2] != "?")
 		throw Bad_request();
+	if(inputs.size() != 5)
+		throw Bad_request();
 	int film_id;
 	for(int i = 3; i < inputs.size() - 1; i++)
 	{
@@ -834,7 +868,7 @@ void Website_handler::print_details_of_film(Film* film)
 	std::cout << "Id = " << film->get_id() << '\n';
 	std::cout << "Director = " << film->get_director() << '\n';
 	std::cout << "Length = " << film->get_length() << '\n';
-	std::cout << "Year = " << film->get_id() << '\n';
+	std::cout << "Year = " << film->get_year() << '\n';
 	std::cout << "Summary = " << film->get_summary() << '\n';
 	std::cout << "Rate = " << std::setprecision(PRECISION) << film->get_rate() << '\n';
 	std::cout << "Price = " << film->get_price() << '\n';

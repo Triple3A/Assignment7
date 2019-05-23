@@ -19,7 +19,7 @@ Comment* Repository_of_comments::search_comment(int comment_id)
 		if(comments[i]->get_id() == comment_id)
 			return comments[i];
 	}
-	// throw Not_found();
+	throw Not_found();
 }
 
 int Repository_of_comments::get_position_of_element(int comment_id)
@@ -29,7 +29,7 @@ int Repository_of_comments::get_position_of_element(int comment_id)
 		if(comments[i]->get_id() == comment_id)
 			return i;
 	}
-	// throw Not_found();
+	throw Not_found();
 }
 
 void Repository_of_comments::delete_comment(int comment_id)

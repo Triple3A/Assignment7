@@ -7,6 +7,12 @@ Film::Film(std::string _name, int _year, int _length, int _price, std::string _s
 	comments = new Repository_of_comments();
 };
 
+Film::~Film()
+{
+	delete[] comments;
+	delete[] publisher;
+}
+
 void Film::set_id(int _id)
 {
 	id = _id;

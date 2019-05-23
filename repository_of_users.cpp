@@ -7,6 +7,8 @@ Repository_of_users::Repository_of_users()
 
 void Repository_of_users::add_user(User* user)
 {
+	if(is_duplicate(user))
+		throw Bad_request();
 	user->set_id(id_counter);
 	id_counter++;
 	users.push_back(user);
@@ -30,4 +32,14 @@ User* Repository_of_users::search_publisher(int user_id)
 			return users[i];
 	}
 	throw Not_found();
+}
+
+bool Repository_of_users::is_duplicate(User* user)
+{
+	for(int i = 0; i < users.size(); i++)
+	{
+		if(users[i] == user)
+			return true;
+	}
+	return false;
 }

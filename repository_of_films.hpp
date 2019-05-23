@@ -7,9 +7,9 @@ class Repository_of_films
 {
 public:
 	Repository_of_films();
-	// ~Repository_of_films();
 	
 	bool is_null(std::string s);
+	bool is_duplicate(Film* film);
 	
 	void add_film(Film* film);
 	Film* search_film_by_id(int id);

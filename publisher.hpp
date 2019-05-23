@@ -10,7 +10,6 @@ class Publisher : public User
 {
 public:
 	Publisher(std::string _name, std::string _password, std::string _email, int _age, bool _publisher);
-	// ~Publisher();
 	int get_cash();
 	std::vector<Film*> get_published_films();
 	virtual std::vector<User*> get_followers();

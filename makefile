@@ -2,8 +2,8 @@ CC := g++ -std=c++11
 
 all: netflix.out
 	
-netflix.out: main.o website_handler.o repository_of_users.o user.o repository_of_films.o film.o publisher.o repository_of_comments.o comment.o
-	$(CC) main.o website_handler.o repository_of_users.o user.o repository_of_films.o film.o publisher.o repository_of_comments.o comment.o -o netflix.out
+netflix.out: main.o website_handler.o repository_of_users.o user.o repository_of_films.o film.o publisher.o repository_of_comments.o comment.o exceptions.o
+	$(CC) main.o website_handler.o repository_of_users.o user.o repository_of_films.o film.o publisher.o repository_of_comments.o comment.o exceptions.o -o netflix.out
 	
 main.o: website_handler.hpp main.cpp
 	$(CC) -c main.cpp -o main.o
@@ -14,7 +14,7 @@ website_handler.o: repository_of_users.hpp repository_of_films.hpp website_handl
 repository_of_users.o: user.hpp repository_of_users.cpp
 	$(CC) -c repository_of_users.cpp -o repository_of_users.o
 	
-user.o: film.hpp user.cpp
+user.o: film.hpp exceptions.hpp user.cpp
 	$(CC) -c user.cpp -o user.o
 	
 repository_of_films.o: film.hpp repository_of_films.cpp
@@ -29,8 +29,11 @@ publisher.o: user.hpp film.hpp publisher.cpp
 repository_of_comments.o: comment.hpp repository_of_comments.cpp
 	$(CC) -c repository_of_comments.cpp -o repository_of_comments.o
 	
-comment.o: comment.cpp
+comment.o: exceptions.hpp comment.cpp
 	$(CC) -c comment.cpp -o comment.o
+	
+exception.o: exceptions.cpp
+	$(CC) -c exceptions.cpp -o exceptions.o
 	
 .PHONY: clean
 clean:

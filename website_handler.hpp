@@ -53,7 +53,7 @@ class Website_handler
 {
 public:
 	Website_handler();
-	// ~Website_handler();
+	~Website_handler();
 	void separator(std::string);
 	void processing_inputs();
 	void add_money(int amount);

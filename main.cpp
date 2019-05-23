@@ -10,7 +10,14 @@ int main()
 	string input;
 	while(getline(cin, input))
 	{
-		web.separator(input);
-		web.processing_inputs();
+		try
+		{
+			web.separator(input);
+			web.processing_inputs();
+		}
+		catch(exception &ex)
+		{
+			cout << ex.what() << endl;
+		}
 	}
 }
