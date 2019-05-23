@@ -187,8 +187,8 @@ void Website_handler::get()
 // 		published();
 // 	else if(is_films())
 // 		get_films();
-// 	else if(is_purchased())
-// 		purchased();
+	else if(is_purchased())
+		get_purchased();
 	else if(is_notifications())
 		notifications();
 	else if(is_notifications_read())
@@ -288,8 +288,8 @@ void Website_handler::login()
 
 void Website_handler::post_films()
 {
-	std::string name, year, summary, director;
-	int length, price;
+	std::string name, summary, director;
+	int length, price, year;
 	if(inputs[2] != "?")
 		throw Bad_request();
 	if(!login_user->is_publisher())
@@ -304,7 +304,7 @@ void Website_handler::post_films()
 		else if(inputs[i] == YEAR)
 		{
 			i++;
-			year = inputs[i];
+			year = std::stoi(inputs[i]);
 		}
 		else if(inputs[i] == LENGTH)
 		{
@@ -718,3 +718,61 @@ void Website_handler::print_notifications(std::vector<std::string> messages, int
 		std::cout << messages[i] << '\n';
 	}
 }
+
+void Website_handler::get_purchased()
+{
+	if(inputs[2] != "?")
+		throw Bad_request();
+	std::string name = "", price = "", min_year = "", max_year = "", director = "";
+	for(int i = 3; i < inputs.size(); i++)
+	{
+		if(inputs[i] == NAME)
+		{
+			i++;
+			name = inputs[i];
+		}
+		else if(inputs[i] == PRICE)
+		{
+			i++;
+			price = inputs[i];
+		}
+		else if(inputs[i] == MIN_YEAR)
+		{
+			i++;
+			min_year = inputs[i];
+		}
+		else if(inputs[i] == MAX_YEAR)
+		{
+			i++;
+			max_year = inputs[i];
+		}
+		else if(inputs[i] == DIRECTOR)
+		{
+			i++;
+			director = inputs[i];
+		}
+		else 
+			throw Bad_request();
+	}
+	std::vector<Film*> purchased_films = login_user->get_purchased(name, price, min_year, max_year, director);
+	print_films(purchased_films);
+}
+
+void Website_handler::print_films(std::vector<Film*> _films)
+{
+	std::cout << "#. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director" << '\n';
+	for(int i = 0; i < _films.size(); i++)
+	{
+		std::cout << i + 1 << ". ";
+		std::cout << _films[i]->get_id() << " | ";
+		std::cout << _films[i]->get_name() << " | ";
+		std::cout << _films[i]->get_length() << " | ";
+		std::cout << _films[i]->get_price() << " | ";
+		std::cout << std::setprecision(PRECISION) << _films[i]->get_rate() << " | ";
+		std::cout << _films[i]->get_year() << " | ";
+		std::cout << _films[i]->get_director() << '\n';
+	}
+}
+
+
+

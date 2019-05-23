@@ -1,6 +1,6 @@
 #include "film.hpp"
 
-Film::Film(std::string _name, std::string _year, int _length, int _price, std::string _summary, std::string _director)
+Film::Film(std::string _name, int _year, int _length, int _price, std::string _summary, std::string _director)
 	: name(_name), year(_year), length(_length), price(_price), summary(_summary), director(_director) 
 {
 	rate = 0.0;
@@ -104,7 +104,7 @@ void Film::edit(std::string _name, std::string _year, std::string _length, std::
 	if(is_not_null(_name))
 		name = _name;
 	if(is_not_null(_year))
-		year = _year;
+		year = std::stoi(_year);
 	if(is_not_null(_summary))
 		summary = _summary;
 	if(is_not_null(_length))
@@ -120,4 +120,25 @@ bool Film::is_not_null(std::string s)
 	if(s == "")
 		return false;
 	return true;
+}
+
+std::string Film::get_summary()	
+{
+	return summary;
+}
+std::string Film::get_director()
+{
+	return director;
+}
+int Film::get_year()
+{
+	return year;
+}
+int Film::get_length()
+{
+	return length;
+}
+float Film::get_rate()
+{
+	return rate;
 }

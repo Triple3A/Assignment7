@@ -25,16 +25,26 @@ public:
 	void set_id(int _id);
 	
 	void add_unread_message(std::string);
-	void show_purchased();
+	std::vector<Film*> get_purchased(std::string _name, std::string price, std::string min_year, std::string max_year, std::string _director);
 	void post_comment(int film_id, std::string);
 	void post_rate(Film* film, float score);
 	Film* search_film(int film_id);
 	void buy(Film* film);
 	void add_film_to_purchased(Film* film);
 	void get_details_of_film(int film_id);
-	bool is_purchased(int film_id);
 	void charge_money(int amount);
+	
+	bool is_purchased(int film_id);
 	bool is_publisher();
+	bool is_null(std::string s);
+	
+	std::vector<Film*> search_films_by_name(std::vector<Film*>, std::string _name);
+	std::vector<Film*> search_films_by_price(std::vector<Film*>, std::string _price);
+	std::vector<Film*> search_films_by_min_year(std::vector<Film*>, std::string min_year);
+	std::vector<Film*> search_films_by_max_year(std::vector<Film*>, std::string max_year);
+	std::vector<Film*> search_films_by_director(std::vector<Film*>, std::string _director);
+		
+		
 	virtual void post_film(Film* film) {};
 	virtual int get_money() {};
 	virtual void add_follower(User* user) {};

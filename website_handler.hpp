@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <iomanip>
 #include "repository_of_users.hpp"
 #include "repository_of_films.hpp"
 
@@ -43,6 +44,9 @@ const std::string USER_ID = "user_id";
 const std::string CONTENT = "content";
 const std::string COMMENT_ID = "comment_id";
 const std::string LIMIT = "limit";
+const std::string MIN_YEAR = "min_year";
+const std::string MAX_YEAR = "max_year";
+const int PRECISION = 2;
 
 class Website_handler
 {
@@ -51,7 +55,6 @@ public:
 	// ~Website_handler();
 	void separator(std::string);
 	void processing_inputs();
-	void print_ok();
 	// void read_files();
 	// void add_to_files();
 	void add_money(int amount);
@@ -92,10 +95,9 @@ public:
 	void get_followers();
 	// void published();
 	// void get_films();
-	// void purchased();
+	void get_purchased();
 	void notifications();
 	void notifications_read();
-	void print_notifications(std::vector<std::string> messages, int limit);
 
 	void put_film();
 
@@ -107,6 +109,12 @@ public:
 	void send_notif_to_following(User* user, User* publisher);
 	void send_notif_add_comment(User*, Publisher*, Film*);
 	void send_notif_reply_comment(User* owner, User* publisher);
+	
+	
+	void print_notifications(std::vector<std::string> messages, int limit);
+	void print_ok();
+	void print_films(std::vector<Film*>);
+	
 private:
 	int cash;
 	std::vector<std::string> inputs;
