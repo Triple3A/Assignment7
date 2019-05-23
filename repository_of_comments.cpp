@@ -37,3 +37,8 @@ void Repository_of_comments::delete_comment(int comment_id)
 	int position = get_position_of_element(comment_id);
 	comments.erase(comments.begin() + position);
 }
+
+std::vector<Comment*> Repository_of_comments::get_comments()
+{
+	return comments;
+}
