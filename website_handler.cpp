@@ -23,7 +23,8 @@ void Website_handler::separator(std::string input)
 			word += input[i];
 			i++;
 		}
-		inputs.push_back(word);
+		if(word != "")
+			inputs.push_back(word);
 	}
 }
 
@@ -132,6 +133,8 @@ bool Website_handler::is_notifications()
 
 void Website_handler::processing_inputs()
 {
+	if(inputs.size() == 0)
+		return;
 	if(is_post())
 	{
 		post();
@@ -185,8 +188,11 @@ void Website_handler::get()
 		show_followers();
 	else if(is_published() || is_purchased() || (is_films() && inputs[3] != FILM_ID))
 		show_films();
-// 	else if(is_films())
-// 		show_films();
+	else if(is_films())
+	{
+		show_details_of_film();
+		// recommend_films();
+	}
 	else if(is_notifications())
 		show_notifications();
 	else if(is_notifications_read())
@@ -801,5 +807,52 @@ void Website_handler::print_films(std::vector<Film*> _films)
 	}
 }
 
+void Website_handler::show_details_of_film()
+{
+	if(inputs[2] != "?")
+		throw Bad_request();
+	int film_id;
+	for(int i = 3; i < inputs.size() - 1; i++)
+	{
+		if(inputs[i] == FILM_ID)
+		{
+			i++;
+			film_id = std::stoi(inputs[i]);
+		}
+		else
+			throw Bad_request();
+	}
+	Film* film = films->search_film_by_id(film_id);
+	print_details_of_film(film);
+	std::vector<Comment*> comments = film->get_comments();
+	print_comments(comments);
+}
 
+void Website_handler::print_details_of_film(Film* film)
+{
+	std::cout << "Details of Film " << film->get_name() << '\n';
+	std::cout << "Id = " << film->get_id() << '\n';
+	std::cout << "Director = " << film->get_director() << '\n';
+	std::cout << "Length = " << film->get_length() << '\n';
+	std::cout << "Year = " << film->get_id() << '\n';
+	std::cout << "Summary = " << film->get_summary() << '\n';
+	std::cout << "Rate = " << std::setprecision(PRECISION) << film->get_rate() << '\n';
+	std::cout << "Price = " << film->get_price() << '\n';
+	std::cout << '\n';
+}
 
+void Website_handler::print_comments(std::vector<Comment*> comments)
+{
+	std::cout << "Comments" << '\n';
+	for(int i = 0; i < comments.size(); i++)
+	{
+		std::cout << comments[i]->get_id() << ". " << comments[i]->get_content() << '\n';
+		std::vector<std::string> replies = comments[i]->get_replies();
+		for(int j = 0; j < replies.size(); j++)
+		{
+			std::cout << comments[i]->get_id() << "." << j + 1 << ". ";
+			std::cout << replies[j] << '\n';
+		}
+	}
+	std::cout << '\n';
+}

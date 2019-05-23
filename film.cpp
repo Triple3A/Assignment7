@@ -142,3 +142,8 @@ float Film::get_rate()
 {
 	return rate;
 }
+
+std::vector<Comment*> Film::get_comments()
+{
+	return comments->get_comments();
+}

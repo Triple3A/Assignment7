@@ -22,3 +22,13 @@ User* Comment::get_owner()
 {
 	return owner;
 }
+
+std::vector<std::string> Comment::get_replies()
+{
+	return replies;
+}
+
+std::string Comment::get_content()
+{
+	return content;
+}

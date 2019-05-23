@@ -97,7 +97,8 @@ public:
 
 	void show_followers();
 	void show_films();
-	// void show_films();
+	void show_details_of_film();
+	void recommend_films();
 	void show_notifications();
 	void show_notifications_read();
 
@@ -116,7 +117,8 @@ public:
 	void print_notifications(std::vector<std::string> messages, int limit);
 	void print_ok();
 	void print_films(std::vector<Film*>);
-	
+	void print_details_of_film(Film* film);
+	void print_comments(std::vector<Comment*> comments);
 private:
 	int cash;
 	std::vector<std::string> inputs;

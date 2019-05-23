@@ -12,6 +12,7 @@ public:
 	Comment* search_comment(int comment_id);
 	int get_position_of_element(int comment_id);
 	void delete_comment(int comment_id);
+	std::vector<Comment*> get_comments();
 	// void read_file(std::string);
 	// void add_to_file(Comment*);
 private:
