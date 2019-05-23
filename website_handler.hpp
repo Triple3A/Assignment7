@@ -72,7 +72,7 @@ public:
 	bool is_notifications();
 	
 	void put();
-	// void get();
+	void get();
 	void post();
 	void _delete();
 	
@@ -86,7 +86,7 @@ public:
 	void rate();
 	void comments();
 
-	// void get_followers();
+	void get_followers();
 	// void published();
 	// void get_films();
 	// void purchased();

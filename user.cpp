@@ -31,6 +31,11 @@ std::string User::get_password()
 	return password;
 }
 
+std::string User::get_email()
+{
+	return email;
+}
+
 bool User::is_publisher()
 {
 	return publisher;

@@ -72,3 +72,8 @@ void Publisher::delete_film(int film_id)
 	int position = get_position_of_element(film_id);
 	published_films.erase(published_films.begin() + position);
 }
+
+std::vector<User*> Publisher::get_followers()
+{
+	return followers;
+}

@@ -13,7 +13,7 @@ public:
 	// ~Publisher();
 	int get_cash();
 	std::vector<Film*> get_published_films();
-	std::vector<User*> get_followers();
+	virtual std::vector<User*> get_followers();
 	
 	void add_money(int amount);
 	virtual void add_follower(User* user);

@@ -131,10 +131,10 @@ void Website_handler::processing_inputs()
 		post();
 		print_ok();
 	}
-	// else if(is_get())
-	// {
-	// 	get();
-	// }
+	else if(is_get())
+	{
+		get();
+	}
 	else if(is_put())
 	{
 		put();
@@ -173,10 +173,10 @@ void Website_handler::post()
 		throw Not_found();
 }
 
-// void Website_handler::get()
-// {
-// 	if(is_followers())
-// 		get_followers();
+void Website_handler::get()
+{
+	if(is_followers())
+		get_followers();
 // 	else if(is_published())
 // 		published();
 // 	else if(is_films())
@@ -185,9 +185,9 @@ void Website_handler::post()
 // 		purchased();
 // 	else if(is_notifications())
 // 		notifications();
-// 	// else
-// 	// 	throw Not_found();
-// }
+	else
+		throw Not_found();
+}
 
 void Website_handler::put()
 {
@@ -643,4 +643,32 @@ void Website_handler::put_film()
 	if(film->get_publisher() != login_user)
 		throw Permission_denied();
 	film->edit(name, year, length, price, summary, director);
+}
+
+
+
+
+
+void Website_handler::get_followers()
+{
+	if(inputs.size() > 2)
+		throw Bad_request();
+	std::cout << "List of Followers" << '\n';
+	std::cout << "#. User Id | User Username | User Email" << '\n';
+	std::vector<User*> followers = login_user->get_followers();
+	for(int i = 0; i < followers.size(); i++)
+	{
+		for(int j = 0; j < i; j++)
+		{
+			if(followers[j]->get_id() > followers[i]->get_id())
+				std::swap(followers[i], followers[j]);
+		}
+	}
+	for(int i = 0; i < followers.size(); i++)
+	{
+		std::cout << i + 1 << ". ";
+		std::cout << followers[i]->get_id() << " | ";
+		std::cout << followers[i]->get_name() << " | ";
+		std::cout << followers[i]->get_email() << '\n';
+	}
 }
