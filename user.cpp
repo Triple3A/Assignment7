@@ -31,6 +31,11 @@ std::string User::get_email()
 	return email;
 }
 
+int User::get_account()
+{
+    return account;
+}
+
 bool User::is_publisher()
 {
 	return publisher;
@@ -45,6 +50,8 @@ void User::buy(Film* film)
 {
 	purchased_films.push_back(film);
 	int price = film->get_price();
+    if(account < price)
+        throw Bad_request();
 	account -= price; 
 }
 

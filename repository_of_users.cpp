@@ -38,7 +38,7 @@ bool Repository_of_users::is_duplicate(User* user)
 {
 	for(int i = 0; i < users.size(); i++)
 	{
-		if(users[i] == user)
+		if(users[i]->get_name() == user->get_name() && users[i]->get_password() == user->get_password())
 			return true;
 	}
 	return false;

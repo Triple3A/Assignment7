@@ -43,6 +43,11 @@ public:
 	bool is_good();
 	void set_publisher(Publisher* _publisher);
 	bool is_not_null(std::string);
+    
+    void purchased();
+    void deleted();
+    
+    int get_num_of_purchased();
 private:
 	Publisher* publisher;
 	Repository_of_comments* comments;
@@ -56,5 +61,7 @@ private:
 	std::vector<float> scores;
 	int number_of_scores;
 	float rate;
+    int number_of_purchased;
+    bool is_deleted;
 };
 #endif

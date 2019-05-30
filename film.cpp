@@ -5,6 +5,8 @@ Film::Film(std::string _name, int _year, int _length, int _price, std::string _s
 {
 	rate = 0.0;
 	comments = new Repository_of_comments();
+    number_of_purchased = 0;
+    is_deleted = false;
 };
 
 Film::~Film()
@@ -152,4 +154,19 @@ float Film::get_rate()
 std::vector<Comment*> Film::get_comments()
 {
 	return comments->get_comments();
+}
+
+void Film::purchased()
+{
+    number_of_purchased++;
+}
+
+void Film::deleted()
+{
+    is_deleted = true;
+}
+
+int Film::get_num_of_purchased()
+{
+    return number_of_purchased;
 }

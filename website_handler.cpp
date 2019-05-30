@@ -5,6 +5,8 @@ Website_handler::Website_handler()
 	cash = 0;
 	users = new Repository_of_users();
 	films = new Repository_of_films();
+    User* admin = new User(ADMIN, ADMIN, "", 0, false);
+    users->add_user(admin);
 	login_user = NULL;
 }
 
@@ -41,21 +43,9 @@ bool Website_handler::is_get()
 		return true;
 	return false;
 }
-bool Website_handler::is_put()
-{
-	if(inputs[0] == PUT)
-		return true;
-	return false;
-}
 bool Website_handler::is_post()
 {
 	if(inputs[0] == POST)
-		return true;
-	return false;
-}
-bool Website_handler::is_delete()
-{
-	if(inputs[0] == DELETE)
 		return true;
 	return false;
 }
@@ -76,6 +66,18 @@ bool Website_handler::is_films()
 	if(inputs[1] == FILMS)
 		return true;
 	return false;
+}
+bool Website_handler::is_put_films()
+{
+    if(inputs[1] == PUT_FILMS)
+        return true;
+    return false;
+}
+bool Website_handler::is_delete_films()
+{
+    if(inputs[1] == DELETE_FILMS)
+        return true;
+    return false;
 }
 bool Website_handler::is_money()
 {
@@ -113,6 +115,12 @@ bool Website_handler::is_comments()
 		return true;
 	return false;
 }
+bool Website_handler::is_delete_comments()
+{
+    if(inputs[1] == DELETE_COMMENTS)
+        return true;
+    return false;
+}
 bool Website_handler::is_published()
 {
 	if(inputs[1] == PUBLISHED)
@@ -137,6 +145,18 @@ bool Website_handler::is_notifications()
 		return true;
 	return false;
 }
+bool Website_handler::is_logout()
+{
+    if(inputs[1] == LOGOUT)
+        return true;
+    return false;
+}
+bool cmp(std::pair<int, int> x, std::pair <int, int> y)
+{
+    if (x.F == y.F) return x.S < y.S;
+    return x.F > y.F;
+    
+}
 
 void Website_handler::processing_inputs()
 {
@@ -153,16 +173,6 @@ void Website_handler::processing_inputs()
 	{
 		get();
 	}
-	else if(is_put())
-	{
-		put();
-		print_ok();
-	}
-	else if(is_delete())
-	{
-		_delete();
-		print_ok();
-	}
 	else
 		throw Bad_request();
 }
@@ -171,14 +181,14 @@ void Website_handler::post()
 {
 	if(is_signup())
 		signup();
+    else if(is_login())
+        login();
 	else if(login_user == NULL)
 		throw Permission_denied();
-	else if(is_login())
-		login();
+    else if(is_money())
+        money();
 	else if(is_films())
 		post_films();
-	else if(is_money())
-		money();
 	else if(is_replies())
 		replies();
 	else if(is_followers())
@@ -189,6 +199,14 @@ void Website_handler::post()
 		rate();
 	else if(is_comments())
 		comments();
+    else if(is_put_films())
+        put_film();
+    else if(is_delete_films())
+        delete_film();
+    else if(is_delete_comments())
+        delete_comment();
+    else if(is_logout())
+        logout();
 	else
 		throw Not_found();
 }
@@ -202,30 +220,13 @@ void Website_handler::get()
 	else if(is_films())
 	{
 		show_details_of_film();
-		recommend_films();
 	}
 	else if(is_notifications())
 		show_notifications();
 	else if(is_notifications_read())
 		show_notifications_read();
-	else
-		throw Not_found();
-}
-
-void Website_handler::put()
-{
-	if(is_films())
-		put_film();
-	else
-		throw Not_found();
-}
-
-void Website_handler::_delete()
-{
-	if(is_films())
-		delete_film();
-	else if(is_comments())
-		delete_comment();
+    else if(is_money())
+        get_money();
 	else
 		throw Not_found();
 }
@@ -238,6 +239,8 @@ void Website_handler::signup()
 	bool is_publisher = false;
 	if(inputs[2] != "?")
 		throw Bad_request();
+    if(login_user != NULL)
+        throw Bad_request();
 	if(inputs.size() != 13 && inputs.size() != 11)
 		throw Bad_request();
 	for(int i = 3; i < inputs.size() - 1; i++)
@@ -271,11 +274,13 @@ void Website_handler::signup()
 		else
 			throw Bad_request();
 	}
+    User* user;
 	if(is_publisher)
-		login_user = new Publisher(username, password, email, age, true);
+		user = new Publisher(username, password, email, age, true);
 	else
-		login_user = new User(username, password, email, age, false);
-	users->add_user(login_user);
+		user = new User(username, password, email, age, false);
+	users->add_user(user);
+    login_user = user;
 }
 
 void Website_handler::login()
@@ -285,6 +290,8 @@ void Website_handler::login()
 		throw Bad_request();
 	if(inputs.size() != 7)
 		throw Bad_request();
+    if(login_user != NULL)
+        throw Bad_request();
 	for(int i = 3; i < inputs.size() - 1; i++)
 	{
 		if(inputs[i] == USERNAME)		
@@ -301,6 +308,13 @@ void Website_handler::login()
 			throw Bad_request();
 	}
 	login_user = users->search_user(username, password);
+}
+
+void Website_handler::logout()
+{
+    if(inputs.size() != 2)
+        throw Bad_request();
+    login_user = NULL;
 }
 
 void Website_handler::post_films()
@@ -351,6 +365,17 @@ void Website_handler::post_films()
 	Film* film = new Film(name, year, length, price, summary, director);
 	films->add_film(film);
 	login_user->post_film(film);
+    add_film_to_matrix();
+}
+
+void Website_handler::add_film_to_matrix()
+{
+    for(int i = 0; i < adjacency_matrix.size(); i++)
+    {
+        adjacency_matrix[i].push_back(0);
+    }
+    std::vector<int> row(adjacency_matrix.size() + 1, 0);
+    adjacency_matrix.push_back(row);
 }
 
 void Website_handler::money()
@@ -401,13 +426,15 @@ void Website_handler::buy()
 			throw Bad_request();
 	}
 	Film* film = films->search_film_by_id(film_id);
+    login_user->buy(film);
+    film->purchased();
 	int price = film->get_price();
 	cash += price;
-	login_user->buy(film);
 	Publisher* publisher = film->get_publisher();
 	price = film->calculate_price();
 	publisher->add_money(price);
 	send_notif_buy_film(login_user, publisher, film);
+    update_matrix();
 }
 
 void Website_handler::rate()
@@ -687,7 +714,15 @@ void Website_handler::put_film()
 
 
 
-
+void Website_handler::get_money()
+{
+    if(inputs.size() != 2)
+        throw Bad_request();
+    if(login_user->get_id() == 1)
+        std::cout << cash << '\n';
+    else
+        std::cout << login_user->get_account() << '\n';
+}
 
 void Website_handler::show_followers()
 {
@@ -860,6 +895,7 @@ void Website_handler::show_details_of_film()
 	print_details_of_film(film);
 	std::vector<Comment*> comments = film->get_comments();
 	print_comments(comments);
+    recommend_films(film_id);
 }
 
 void Website_handler::print_details_of_film(Film* film)
@@ -891,16 +927,20 @@ void Website_handler::print_comments(std::vector<Comment*> comments)
 	std::cout << '\n';
 }
 
-void Website_handler::recommend_films()
+void Website_handler::recommend_films(int film_id)
 {
-	std::vector<Film*> all_films = films->get_all_films();
-	sort_by_rate(all_films);
+    std::vector<std::pair<int, int> > all_films;
+    for (int i = 0; i < adjacency_matrix[film_id - 1].size(); i++)
+    {
+        all_films.push_back({adjacency_matrix[film_id - 1][i], i + 1});
+    }
+    std::sort(all_films.begin(), all_films.end(), cmp);
 	std::vector<Film*> recommendation_films;
 	for(int i = 0; i < all_films.size(); i++)
 	{
-		if(login_user->is_purchased(all_films[i]))
+		if(login_user->is_purchased(films->search_film_by_id(all_films[i].S)))
 			continue;
-		recommendation_films.push_back(all_films[i]);
+        recommendation_films.push_back(films->search_film_by_id(all_films[i].S));
 	}
 	print_recommendation_films(recommendation_films);
 }
@@ -921,18 +961,23 @@ void Website_handler::print_recommendation_films(std::vector<Film*> recommendati
 	}
 }
 
-void Website_handler::sort_by_rate(std::vector<Film*>& _films)
+
+
+void Website_handler::update_matrix()
 {
-	for(int i = 0; i < _films.size(); i++)
-		for(int j = 0; j < i; j++)
-		{
-			if(_films[j]->get_rate() < _films[i]->get_rate())
-				std::swap(_films[i], _films[j]);
-			else if(_films[j]->get_rate() == _films[i]->get_rate())
-				if(_films[j]->get_id() > _films[i]->get_id())
-					std::swap(_films[i], _films[j]);
-		}
+    for(int i = 0; i < adjacency_matrix.size(); i++)
+    {
+        Film* film1 = films->search_film_by_id(i + 1);
+        for(int j = 0; j < adjacency_matrix[i].size(); j++)
+        {
+            if(i == j)
+            {
+                adjacency_matrix[i][j] = 0;
+                continue;
+            }
+            
+            Film* film2 = films->search_film_by_id(j + 1);
+            adjacency_matrix[i][j] = std::min(film1->get_num_of_purchased(), film2->get_num_of_purchased());
+        }
+    }
 }
-
-
-

@@ -9,6 +9,7 @@ void Repository_of_films::add_film(Film* film)
 {
 	 if(is_duplicate(film))
 		throw Bad_request();
+    film->purchased();
 	film->set_id(id_counter);
 	id_counter++;
 	films.push_back(film);
@@ -37,6 +38,8 @@ int Repository_of_films::get_position_of_film(int id)
 void Repository_of_films::delete_film(int id)
 {
 	int position = get_position_of_film(id);
+    Film* film = search_film_by_id(id);
+    film->deleted();
 	films.erase(films.begin() + position);
 }
 

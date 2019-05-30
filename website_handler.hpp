@@ -5,14 +5,20 @@
 #include <vector>
 #include <string>
 #include <iomanip>
+#include <algorithm>
 #include "repository_of_users.hpp"
 #include "repository_of_films.hpp"
 
+#define F first
+#define S second
+
 const char SPACE = ' ';
-const std::string PUT = "PUT";
+const std::string ADMIN = "admin";
+const std::string PUT_FILMS = "put_films";
 const std::string GET = "GET";
 const std::string POST = "POST";
-const std::string DELETE = "DELETE";
+const std::string DELETE_FILMS = "delete_films";
+const std::string DELETE_COMMENTS = "delete_comments";
 const std::string SIGNUP = "signup";
 const std::string LOGIN = "login";
 const std::string FILMS = "films";
@@ -47,7 +53,10 @@ const std::string LIMIT = "limit";
 const std::string MIN_YEAR = "min_year";
 const std::string MAX_YEAR = "max_year";
 const std::string MIN_RATE = "min_rate";
+const std::string LOGOUT = "logout";
 const int PRECISION = 2;
+
+bool cmp(std::pair<int, int> x, std::pair <int, int> y);
 
 class Website_handler
 {
@@ -65,24 +74,28 @@ public:
 	bool is_signup();
 	bool is_login();
 	bool is_films();
+    bool is_put_films();
+    bool is_delete_films();
 	bool is_money();
 	bool is_replies();
 	bool is_followers();
 	bool is_buy();
 	bool is_rate();
 	bool is_comments();
+    bool is_delete_comments();
 	bool is_published();
 	bool is_purchased();
 	bool is_notifications();
 	bool is_notifications_read();
+    bool is_logout();
+    
 	
-	void put();
 	void get();
-	void post();
-	void _delete();
+    void post();
 	
 	void signup();
 	void login();
+    void logout();
 	void post_films();
 	void money();
 	void replies();
@@ -95,9 +108,10 @@ public:
 	void sort_by_rate(std::vector<Film*>&);
 
 	void show_followers();
+    void get_money();
 	void show_films();
 	void show_details_of_film();
-	void recommend_films();
+	void recommend_films(int film_id);
 	void show_notifications();
 	void show_notifications_read();
 
@@ -119,11 +133,15 @@ public:
 	void print_details_of_film(Film* film);
 	void print_comments(std::vector<Comment*> comments);
 	void print_recommendation_films(std::vector<Film*> recommendation_films);
+    
+    void add_film_to_matrix();
+    void update_matrix();
 private:
 	int cash;
 	std::vector<std::string> inputs;
 	Repository_of_films* films;
 	Repository_of_users* users;
+    std::vector<std::vector<int> > adjacency_matrix;
 	User* login_user;
 };
 #endif
