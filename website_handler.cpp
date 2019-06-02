@@ -1,6 +1,7 @@
 #include "website_handler.hpp"
 
-Website_handler::Website_handler()
+Website_handler::Website_handler(MyServer* _server)
+    : server(_server)
 {
 	cash = 0;
 	users = new Repository_of_users();
@@ -21,136 +22,6 @@ void Website_handler::print_ok()
 	std::cout << "OK" << '\n';
 }
 
-void Website_handler::separator(std::string input)
-{
-	inputs.clear();
-	for(int i = 0; i < input.size(); i++)
-	{
-		std::string word = "";
-		while(input[i] != SPACE && i < input.size())
-		{
-			word += input[i];
-			i++;
-		}
-		if(word != "")
-			inputs.push_back(word);
-	}
-}
-
-bool Website_handler::is_get()
-{
-	if(inputs[0] == GET)
-		return true;
-	return false;
-}
-bool Website_handler::is_post()
-{
-	if(inputs[0] == POST)
-		return true;
-	return false;
-}
-bool Website_handler::is_signup()
-{
-	if(inputs[1] == SIGNUP)
-		return true;
-	return false;
-}
-bool Website_handler::is_login()
-{
-	if(inputs[1] == LOGIN)
-		return true;
-	return false;
-}
-bool Website_handler::is_films()
-{
-	if(inputs[1] == FILMS)
-		return true;
-	return false;
-}
-bool Website_handler::is_put_films()
-{
-    if(inputs[1] == PUT_FILMS)
-        return true;
-    return false;
-}
-bool Website_handler::is_delete_films()
-{
-    if(inputs[1] == DELETE_FILMS)
-        return true;
-    return false;
-}
-bool Website_handler::is_money()
-{
-	if(inputs[1] == MONEY)
-		return true;
-	return false;
-}
-bool Website_handler::is_replies()
-{
-	if(inputs[1] == REPLIES)
-		return true;
-	return false;
-}
-bool Website_handler::is_followers()
-{
-	if(inputs[1] == FOLLOWERS)
-		return true;
-	return false;
-}
-bool Website_handler::is_buy()
-{
-	if(inputs[1] == BUY)
-		return true;
-	return false;
-}
-bool Website_handler::is_rate()
-{
-	if(inputs[1] == RATE)
-		return true;
-	return false;
-}
-bool Website_handler::is_comments()
-{
-	if(inputs[1] == COMMENTS)
-		return true;
-	return false;
-}
-bool Website_handler::is_delete_comments()
-{
-    if(inputs[1] == DELETE_COMMENTS)
-        return true;
-    return false;
-}
-bool Website_handler::is_published()
-{
-	if(inputs[1] == PUBLISHED)
-		return true;
-	return false;
-}
-bool Website_handler::is_purchased()
-{
-	if(inputs[1] == PURCHASED)
-		return true;
-	return false;
-}
-bool Website_handler::is_notifications_read()
-{
-	if(inputs[1] == NOTIFICATIONS && inputs[2] == READ)
-		return true;
-	return false;
-}
-bool Website_handler::is_notifications()
-{
-	if(inputs[1] == NOTIFICATIONS && inputs.size() == 2)
-		return true;
-	return false;
-}
-bool Website_handler::is_logout()
-{
-    if(inputs[1] == LOGOUT)
-        return true;
-    return false;
-}
 bool cmp(std::pair<int, int> x, std::pair <int, int> y)
 {
     if (x.F == y.F) return x.S < y.S;
@@ -158,122 +29,33 @@ bool cmp(std::pair<int, int> x, std::pair <int, int> y)
     
 }
 
-void Website_handler::processing_inputs()
+void Website_handler::run()
 {
-	if(inputs.size() == 0)
-		return;
-	if(is_post())
-	{
-		post();
-		print_ok();
-	}
-	else if(login_user == NULL)
-		throw Permission_denied();
-	else if(is_get())
-	{
-		get();
-	}
-	else
-		throw Bad_request();
+    server->setNotFoundErrPage("../APHTTP/static/404.html");
+    server->get("/login", new ShowPage("../Phase3/login.html"));
+    server->post("/login", new LoginHandler(this));
+    server->get("/signup", new ShowPage("../Phase3/signup.html"));
+    server->post("/signup", new SignupHandler(this));
+    server->get("/up", new ShowPage("../APHTTP/static/upload_form.html"));
+    server->post("/up", new UploadHandler());
+    server->get("/rand", new RandomNumberHandler());
+    server->get("/home.png", new ShowImage("../APHTTP/static/home.png"));
+    server->get("/", new ShowPage("../Phase3/home.html"));
+    server->get("/colors", new ColorHandler("../APHTTP/template/colors.html"));
+    server->run();
 }
 
-void Website_handler::post()
+int Website_handler::get_id_of_login_user()
 {
-	if(is_signup())
-		signup();
-    else if(is_login())
-        login();
-	else if(login_user == NULL)
-		throw Permission_denied();
-    else if(is_money())
-        money();
-	else if(is_films())
-		post_films();
-	else if(is_replies())
-		replies();
-	else if(is_followers())
-		followers();
-	else if(is_buy())
-		buy();
-	else if(is_rate())
-		rate();
-	else if(is_comments())
-		comments();
-    else if(is_put_films())
-        put_film();
-    else if(is_delete_films())
-        delete_film();
-    else if(is_delete_comments())
-        delete_comment();
-    else if(is_logout())
-        logout();
-	else
-		throw Not_found();
-}
-
-void Website_handler::get()
-{
-	if(is_followers())
-		show_followers();
-	else if(is_published() || is_purchased() || (is_films() && inputs[3] != FILM_ID))
-		show_films();
-	else if(is_films())
-	{
-		show_details_of_film();
-	}
-	else if(is_notifications())
-		show_notifications();
-	else if(is_notifications_read())
-		show_notifications_read();
-    else if(is_money())
-        get_money();
-	else
-		throw Not_found();
+    return login_user->get_id();
 }
 
 
-void Website_handler::signup()
+
+void Website_handler::signup(std::string username, std::string password, int age, std::string email, bool is_publisher)
 {
-	std::string email, username, password;
-	int age;
-	bool is_publisher = false;
-	if(inputs[2] != "?")
-		throw Bad_request();
-    if(login_user != NULL)
-        throw Bad_request();
-	if(inputs.size() != 13 && inputs.size() != 11)
-		throw Bad_request();
-	for(int i = 3; i < inputs.size() - 1; i++)
-	{
-		if(inputs[i] == EMAIL)
-		{
-			i++;
-			email = inputs[i];
-		}
-		else if(inputs[i] == USERNAME)
-		{
-			i++;
-			username = inputs[i];
-		}
-		else if(inputs[i] == PASSWORD)
-		{
-			i++;
-			password = inputs[i];
-		}
-		else if(inputs[i] == AGE)
-		{
-			i++;
-			age = std::stoi(inputs[i]);
-		}
-		else if(inputs[i] == PUBLISHER)
-		{
-			i++;
-			if(inputs[i] == "true")
-				is_publisher = true;
-		}
-		else
-			throw Bad_request();
-	}
+//    if(login_user != NULL)
+//        throw Bad_request();
     User* user;
 	if(is_publisher)
 		user = new Publisher(username, password, email, age, true);
@@ -283,31 +65,12 @@ void Website_handler::signup()
     login_user = user;
 }
 
-void Website_handler::login()
+void Website_handler::login(std::string username, std::string password)
 {
-	std::string username, password;
-	if(inputs[2] != "?")
-		throw Bad_request();
-	if(inputs.size() != 7)
-		throw Bad_request();
-    if(login_user != NULL)
-        throw Bad_request();
-	for(int i = 3; i < inputs.size() - 1; i++)
-	{
-		if(inputs[i] == USERNAME)		
-		{			
-			i++;
-			username = inputs[i];		
-		}		
-		else if(inputs[i] == PASSWORD)		
-		{
-			i++;			
-			password = inputs[i];		
-		}
-		else
-			throw Bad_request();
-	}
+//    if(login_user != NULL)
+//        throw Bad_request();
 	login_user = users->search_user(username, password);
+    retrun login_user->get_id();
 }
 
 void Website_handler::logout()

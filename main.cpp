@@ -1,23 +1,23 @@
 #include <iostream>
 #include <vector>
-#include "website_handler.hpp"
+#include "my_server.hpp"
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
+#include "handlers.hpp"
 
 using namespace std;
 
-int main()
+int main(int argc, char **argv)
 {
-	Website_handler web;
-	string input;
-	while(getline(cin, input))
-	{
-		try
-		{
-			web.separator(input);
-			web.processing_inputs();
-		}
-		catch(exception &ex)
-		{
-			cout << ex.what() << endl;
-		}
-	}
+    MyServer* server = new MyServer(argc > 1 ? atoi(argv[1]) : 5000);
+    website_handler web(server);
+    try
+    {
+        web.run();
+    }
+    catch (Server::Exception e)
+    {
+        cerr << e.getMessage() << endl;
+    }
 }

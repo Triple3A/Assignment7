@@ -58,43 +58,26 @@ const int PRECISION = 2;
 
 bool cmp(std::pair<int, int> x, std::pair <int, int> y);
 
+class RandomNumberHandler;
+class LoginHandler;
+class SignupHandler;
+class UploadHandler;
+class MyServer;
+
+
 class Website_handler
 {
 public:
-	Website_handler();
+	Website_handler(MyServer* _server);
 	~Website_handler();
-	void separator(std::string);
-	void processing_inputs();
+	void run();
 	void add_money(int amount);
-	
-	bool is_get();
-	bool is_put();
-	bool is_post();
-	bool is_delete();
-	bool is_signup();
-	bool is_login();
-	bool is_films();
-    bool is_put_films();
-    bool is_delete_films();
-	bool is_money();
-	bool is_replies();
-	bool is_followers();
-	bool is_buy();
-	bool is_rate();
-	bool is_comments();
-    bool is_delete_comments();
-	bool is_published();
-	bool is_purchased();
-	bool is_notifications();
-	bool is_notifications_read();
-    bool is_logout();
     
+    int get_id_of_login_user();
 	
-	void get();
-    void post();
 	
-	void signup();
-	void login();
+    void signup(std::string username, std::string password, int age, std::string email, bool is_publisher);
+	void login(std::string username, std::string password);
     void logout();
 	void post_films();
 	void money();
@@ -138,7 +121,7 @@ public:
     void update_matrix();
 private:
 	int cash;
-	std::vector<std::string> inputs;
+    MyServer *server;
 	Repository_of_films* films;
 	Repository_of_users* users;
     std::vector<std::vector<int> > adjacency_matrix;
