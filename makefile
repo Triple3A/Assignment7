@@ -2,6 +2,9 @@ CC := g++ -std=c++11
 BUILD_DIR=build
 TEMPLATE_DIR=.template
 
+$(BUILD_DIR):
+mkdir -p $(BUILD_DIR)
+
 all: netflix.out
 	
 netflix.out: main.o website_handler.o repository_of_users.o user.o repository_of_films.o film.o publisher.o repository_of_comments.o comment.o exceptions.o $(BUILD_DIR)/my_server.o $(BUILD_DIR)/main.o $(BUILD_DIR)/handlers.o $(BUILD_DIR)/response.o $(BUILD_DIR)/request.o $(BUILD_DIR)/utilities.o $(BUILD_DIR)/server.o $(BUILD_DIR)/route.o $(BUILD_DIR)/template_parser.o
@@ -34,9 +37,6 @@ comment.o: exceptions.hpp comment.cpp
 exception.o: exceptions.cpp
 	$(CC) -c exceptions.cpp -o exceptions.o
 
-
-$(BUILD_DIR):
-mkdir -p $(BUILD_DIR)
 
 $(BUILD_DIR)/template_parser.o: utils/template_parser.cpp utils/template_parser.hpp utils/request.cpp utils/request.hpp utils/utilities.hpp utils/utilities.cpp
     $(CC) -c utils/template_parser.cpp -o $(BUILD_DIR)/template_parser.o
