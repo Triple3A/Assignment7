@@ -19,7 +19,7 @@ public:
 	void delete_comment(int film_id, int comment_id);
 	void post_replies(int film_id, int comment_id, std::string);
 	
-	virtual std::vector<Film*> get_published_films(std::string _name, std::string price, std::string min_year, std::string max_year, std::string _director, std::string min_rate);
+    virtual std::vector<Film*> get_published_films(std::string _director);
 	virtual int get_money();
 	virtual int get_position_of_element(int film_id);
 	

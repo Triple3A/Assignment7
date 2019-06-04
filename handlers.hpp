@@ -7,13 +7,24 @@
 #include <iostream>
 #include "website_handler.hpp"
 
-class RandomNumberHandler : public RequestHandler
+class PublisherHomeHandler : public RequestHandler
 {
 public:
+    PublisherHomeHandler(Website_handler* _web) :web(_web) {};
     Response *callback(Request *);
 private:
     Website_handler* web;
 };
+
+class CustomerHomeHandler : public RequestHandler
+{
+public:
+    CustomerHomeHandler(Website_handler* _web) :web(_web) {};
+    Response *callback(Request *);
+private:
+    Website_handler* web;
+};
+
 
 class LoginHandler : public RequestHandler
 {
@@ -33,19 +44,78 @@ private:
     Website_handler* web;
 };
 
-class UploadHandler : public RequestHandler
+class PostFilmHandler : public RequestHandler
 {
 public:
+    PostFilmHandler(Website_handler* _web) :web(_web) {};
     Response *callback(Request *);
 private:
     Website_handler* web;
 };
 
-class ColorHandler : public TemplateHandler
+class DeleteFilmHandler : public RequestHandler
 {
 public:
-  ColorHandler(std::string filePath);
-  std::map<std::string, std::string> handle(Request *req);
+    DeleteFilmHandler(Website_handler* _web) :web(_web) {};
+    Response *callback(Request *);
+private:
+    Website_handler* web;
 };
+
+class ProfileHandler : public RequestHandler
+{
+public:
+    ProfileHandler(Website_handler* _web) :web(_web) {};
+    Response *callback(Request *);
+private:
+    Website_handler* web;
+};
+
+class LogoutHandler : public RequestHandler
+{
+public:
+    LogoutHandler(Website_handler* _web) :web(_web) {};
+    Response *callback(Request *);
+private:
+    Website_handler* web;
+};
+
+class DetailFilmHandler : public RequestHandler
+{
+public:
+    DetailFilmHandler(Website_handler* _web) :web(_web) {};
+    Response *callback(Request *);
+private:
+    Website_handler* web;
+};
+
+class BuyFilmHandler : public RequestHandler
+{
+public:
+    BuyFilmHandler(Website_handler* _web) :web(_web) {};
+    Response *callback(Request *);
+private:
+    Website_handler* web;
+};
+
+class RateFilmHandler : public RequestHandler
+{
+public:
+    RateFilmHandler(Website_handler* _web) :web(_web) {};
+    Response *callback(Request *);
+private:
+    Website_handler* web;
+};
+
+class CommentFilmHandler : public RequestHandler
+{
+public:
+    CommentFilmHandler(Website_handler* _web) :web(_web) {};
+    Response *callback(Request *);
+private:
+    Website_handler* web;
+};
+
+
 
 #endif

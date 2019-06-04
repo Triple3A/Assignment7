@@ -159,3 +159,14 @@ bool Repository_of_films::is_duplicate(Film* film)
 	}
 	return false;
 }
+
+std::vector<Film*> Repository_of_films::user_can_buy(User* user)
+{
+    std::vector<Film*> films_can_buy;
+    for(int i = 0; i < films.size(); i++)
+    {
+        if(films[i]->get_price() <= user->get_account())
+            films_can_buy.push_back(films[i]);
+    }
+    return films_can_buy;
+}

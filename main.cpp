@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char **argv)
 {
     MyServer* server = new MyServer(argc > 1 ? atoi(argv[1]) : 5000);
-    website_handler web(server);
+    Website_handler web(server);
     try
     {
         web.run();
@@ -19,5 +19,9 @@ int main(int argc, char **argv)
     catch (Server::Exception e)
     {
         cerr << e.getMessage() << endl;
+    }
+    catch(exception &ex)
+    {
+        cerr << ex.what() << endl;
     }
 }

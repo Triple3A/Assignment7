@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+
+</style>
+</head>
+<body style="text-align: center;">
+
+<ul>
+	<li><a href="/publisher">Home</a></li>
+	<li><a class="active">Post Film</a></li>
+	<li><a href="/customer">Available Films</a></li>
+	<li><a href="/profile">Profile</a></li>
+	<li><a href="/detail">Details Of Film</a></li>
+	<li style="float:right"><a href="/logout">Exit</a></li>
+</ul>
+	<form action = "/post_film" method = "post">
+	  <br>
+	  <fieldset>
+	    <legend>film information:</legend>
+	    Name:<br>
+	    <input type="text" name="name"><br>
+	    Price:<br>
+	    <input type="number" name="price" min="0"><br>
+	    Length:<br>
+	    <input type="number" name="length" min="1"><br>
+		Year:<br>
+		<input type="number" name="year" min="1"><br>
+		Director:<br>
+  	  	<input type="text" name="director"><br>
+		Summary:<br>
+  	  	<input type="text" name="summary"><br>
+	    <input type="submit" value="Submit">
+		<input type="reset">
+	  </fieldset>
+	</form>
+</body>
+</html>

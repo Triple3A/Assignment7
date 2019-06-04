@@ -96,16 +96,11 @@ bool User::is_null(std::string s)
 	return false;
 }
 
-std::vector<Film*> User::get_purchased(std::string _name, std::string _price, std::string min_year, std::string max_year, std::string _director)
+std::vector<Film*> User::get_purchased()
 {
-	std::vector<Film*> searched_films;
-	searched_films = search_films_by_name(purchased_films, _name);
-	searched_films = search_films_by_price(searched_films, _price);
-	searched_films = search_films_by_min_year(searched_films, min_year);
-	searched_films = search_films_by_max_year(searched_films, max_year);	
-	searched_films = search_films_by_director(searched_films, _director);
-	return searched_films;
+	return purchased_films;
 }
+
 
 std::vector<Film*> User::search_films_by_name(std::vector<Film*> films, std::string _name)
 {

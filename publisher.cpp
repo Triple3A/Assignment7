@@ -78,16 +78,11 @@ std::vector<User*> Publisher::get_followers()
 	return followers;
 }
 
-std::vector<Film*> Publisher::get_published_films(std::string _name, std::string _price, std::string min_year, std::string max_year, std::string _director, std::string min_rate)
+std::vector<Film*> Publisher::get_published_films(std::string _director)
 {
-	std::vector<Film*> searched_films;
-	searched_films = search_films_by_name(published_films, _name);
-	searched_films = search_films_by_price(searched_films, _price);
-	searched_films = search_films_by_min_year(searched_films, min_year);
-	searched_films = search_films_by_max_year(searched_films, max_year);	
-	searched_films = search_films_by_director(searched_films, _director);
-	searched_films = search_films_by_min_rate(searched_films, min_rate);
-	return searched_films;
+    std::vector<Film*> searched_films = published_films;
+    searched_films = search_films_by_director(searched_films, _director);
+    return searched_films;
 }
 
 std::vector<Film*> Publisher::search_films_by_min_rate(std::vector<Film*> films, std::string min_rate)

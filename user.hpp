@@ -16,13 +16,13 @@ public:
 	int get_age();
 	int get_id();
 	int get_account();
-	std::vector<Film*> get_films();
+    std::vector<Film*> get_purchased();
 	std::vector<std::string> get_and_read_unread_messages();
 	std::vector<std::string> get_read_messages();
+    
 	void set_id(int _id);
 	
 	void add_unread_message(std::string);
-	std::vector<Film*> get_purchased(std::string _name, std::string price, std::string min_year, std::string max_year, std::string _director);
 	void post_comment(int film_id, std::string);
 	void post_rate(Film* film, float score);
 	Film* search_film(int film_id);
@@ -49,7 +49,7 @@ public:
 	virtual void delete_film(int film_id) {};
 	virtual int get_position_of_element(int film_id) {};
 	virtual std::vector<User*> get_followers() {};
-	virtual std::vector<Film*> get_published_films(std::string _name, std::string price, std::string min_year, std::string max_year, std::string _director, std::string min_rate) {};
+	virtual std::vector<Film*> get_published_films(std::string _director) {};
 protected:
 	std::string name;
 	std::string password;
