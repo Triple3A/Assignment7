@@ -205,7 +205,7 @@ Response *SignupHandler::callback(Request *req)
     string repass = req->getBodyParam("repassword");
     int age = stoi(req->getBodyParam("age"));
     string email = req->getBodyParam("email");
-    if(req->getBodyParam("is_publisher") == "1")
+    if(req->getBodyParam("is_publisher") == "publisher")
         is_publisher = true;
     if(password != repass)
         throw Server::Exception("Please enter your password again.");

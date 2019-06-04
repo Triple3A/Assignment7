@@ -30,11 +30,11 @@ bool cmp(std::pair<int, int> x, std::pair <int, int> y)
 void Website_handler::run()
 {
     server->setNotFoundErrPage("static/404.html");
-    server->get("/login", new ShowPage("static/login.html"));
+    server->get("/login", new ShowPage("static/logincss.html"));
     server->post("/login", new LoginHandler(this));
-    server->get("/signup", new ShowPage("static/signup.html"));
+    server->get("/signup", new ShowPage("static/signupcss.html"));
     server->post("/signup", new SignupHandler(this));
-    server->get("/post_film", new ShowPage("static/post_film.html"));
+    server->get("/post_film", new ShowPage("static/post_filmcss.html"));
     server->post("/post_film", new PostFilmHandler(this));
     server->get("/logout", new ShowPage("static/home.html"));
     server->post("/logout", new LogoutHandler(this));
